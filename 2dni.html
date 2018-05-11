@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>
+            P&aacute;gina con Javascript
+        </title>
+        <script languaje="Javascript">
+
+            //Cadena letras
+            const SLETRAS = "TRWAGMYFPDXBNJZSQVHLCKE"
+
+            function GetLetraDNI(){
+
+                //Obtener DNI
+                var sDNI = document.getElementById("cajaTexto").value;
+
+                // Convertir string a numero
+                var nDNI =  parseInt(sDNI);
+                console.log ("El numeri del DNI es " + nDNI)
+
+                //Obtener el cociente
+                var modulo = nDNI % 23;
+
+                //Muestra letra
+                console.log(SLETRAS.substring(modulo,modulo+1));
+                //alert(sLetras.substring(modulo,modulo+1));
+            }
+        </script>
+    </head>
+    <body>
+        <label for="DNI">DNI</label>
+        <input type="text" id="cajaTexto"> </input>
+        <br>
+        <label for="Letra">Letra DNI</label>
+        <input type="text" maxid="cajaLetra"> </input>
+        <button type="button" onclick="GetLetraDNI()">Click para calcular la letra del DNI!</button>
+    </body>
+</html>
