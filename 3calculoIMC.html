@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <title>
+            P&aacute;gina con Javascript
+        </title>
+        <script languaje="Javascript">
+
+            function main(){
+                //Obtiene peso
+                var peso = document.getElementById("cajaPeso").value;
+
+                //Obitene altura
+                var altura = document.getElementById("cajaAltura").value;
+
+                //Calcula IMC
+                var IMC =  CalcularIMC(peso, altura);
+
+                //Muestra IMC
+                document.getElementById("cajaIMC").value = IMC
+
+                //Calcula clasificacion IMC
+                if (IMC<15)
+                {
+
+                }else if ((IMC>=15)&&(IMC<=20))
+                {
+
+                }else if ((IMC<=15)&&(IMC>=20))
+                {
+
+                }else if ((IMC<20)&&(IMC>=20))
+                {
+
+                }else if ((IMC<25)&&(IMC>=20))
+                {
+
+                }else if ((IMC<30)&&(IMC>=20))
+                {
+
+                }else if ((IMC<35)&&(IMC>=20))
+                {
+
+                }else if ((IMC<40)&&(IMC>=20))
+                {}
+
+
+
+            }
+
+
+
+
+
+            function CalcularIMC(var peso; var altura){
+                var IMC = peso/(altura*altura);
+                return IMC;
+            }
+
+
+
+
+        </script>
+
+
+    </head>
+    <body>
+        <label for="Peso">Peso</label>
+        <input type="number" id="cajaPeso"> </input>
+        <br>
+
+        <label for="Altura">Altura</label>
+        <input type="number" id="cajaAltura"> </input>
+        <br>
+
+        <button type="button" onclick="main()">Click para calcular el IMC!!!</button>
+        <br>
+
+        <label for="IMC">IMC</label>
+        <input type="number" id="cajaIMC"> </input>
+        <br>
+
+        <label for="clasificacionIMC">Clasificacion IMC</label>
+        <input type="text" id="cajaClasificacionIMC"> </input>
+        <br>
+
+
+
+
+
+
+
+    </body>
+</html>
