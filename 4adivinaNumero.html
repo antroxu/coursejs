@@ -1,0 +1,64 @@
+<html>
+   <head>
+      <title>
+         P&aacute;gina con Javascript.
+      </title>
+      <script language="javascript">
+        window.onload = Main();
+         
+        function Main()
+        {
+            //Declaro número que hay que buscar
+            var numero = 0;
+            var vidas = 0;
+            var intento = 0;
+
+            //Obtengo un numero entre 1 y 100 de forma aleatoria
+            numero = obtenNumeroAleatorio();
+
+            //Intentos del usuario
+            do
+            {
+                intento = window.prompt ("Intento " + (vidas + 1) + ": Introduce un número-> ");
+
+                if (intento == numero)
+                    {
+                        msg = "igual";
+                    }
+                else if (intento < numero)
+                    {
+                    msg = "menor";
+                    }
+                else
+                {
+                    msg = "mayor";
+                }
+                
+                console.log ("El numero " + intento + " es " + msg + " que el número buscado")
+
+                vidas = vidas + 1
+            }
+            while ((vidas< 5) && (intento != numero));
+
+            if (intento != numero)
+                {
+                alert ("El numero es: " + numero)
+                }
+
+        }
+
+        function obtenNumeroAleatorio()
+        {
+            //Obtengo un numero entre 1 y 100 de forma aleatoria
+            var num = Math.ceil(Math.random()*100);
+
+            //Devuelvo ngit umero aleatorio
+            return num
+        }
+
+      </script>
+   </head>
+   <body>
+       <button onclick="Main()">"Click para reintentar"</button>
+   </body>
+</html>

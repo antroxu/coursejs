@@ -6,74 +6,80 @@
         <script languaje="Javascript">
 
             function main(){
+                var peso = 0
+                var altura = 0
+                var IMC = 0
+                var IMCClas = ""
+
                 //Obtiene peso
-                var peso = document.getElementById("cajaPeso").value;
+                peso = document.getElementById("cajaPeso").value;
 
                 //Obitene altura
-                var altura = document.getElementById("cajaAltura").value;
+                altura = document.getElementById("cajaAltura").value;
 
                 //Calcula IMC
-                var IMC =  CalcularIMC(peso, altura);
+                IMC =  CalcularIMC(peso, altura);
 
                 //Muestra IMC
-                document.getElementById("cajaIMC").value = IMC
+                document.getElementById("cajaIMC").value = IMC;
 
-                //Calcula clasificacion IMC
-                if (IMC<15)
-                {
+                //Calcula Clasificación IMC
+                IMCClas = CalculaIMCClas(IMC);
 
-                }else if ((IMC>=15)&&(IMC<=20))
-                {
-
-                }else if ((IMC<=15)&&(IMC>=20))
-                {
-
-                }else if ((IMC<20)&&(IMC>=20))
-                {
-
-                }else if ((IMC<25)&&(IMC>=20))
-                {
-
-                }else if ((IMC<30)&&(IMC>=20))
-                {
-
-                }else if ((IMC<35)&&(IMC>=20))
-                {
-
-                }else if ((IMC<40)&&(IMC>=20))
-                {}
+                //Muestra Clasificacion IMC
+                document.getElementById("cajaClasificacionIMC").value = IMCClas;
+                
+                //Pint dibujo segun clasificacion
+                document.getElementById("imagenIMC").src = IMCClas + ".jpg";
+                }
 
 
-
-            }
-
-
-
-
-
-            function CalcularIMC(var peso; var altura){
-                var IMC = peso/(altura*altura);
+            function CalcularIMC(peso, altura){
+                var IMC = 0
+                IMC = peso/(altura*altura);
                 return IMC;
-            }
+            };
+
+            function CalculaIMCClas(IMC){
+                //Calcula clasificacion IMC
+                var IMCClas = ""
+                if (IMC<15) //Desnutrido
+                {
+                    IMCClas= "Desnutrido"
+                }else if ((IMC>=15)&&(IMC<18)) //Delgado
+                {
+                    IMCClas= "Delgado"
+                }else if ((IMC>=18)&&(IMC<25)) //Normal
+                {
+                    IMCClas= "Normal"
+                }else if ((IMC>=25)&&(IMC<31)) //Sobrepeso
+                {
+                    IMCClas= "Sobrepeso"
+                }else if (IMC>=31) //Obeso
+                {
+                    IMCClas= "Obeso"
+                }
+                return IMCClas;
 
 
-
+            };
+            
 
         </script>
 
 
     </head>
     <body>
-        <label for="Peso">Peso</label>
+        <label for="Peso">Introduce Peso</label>
         <input type="number" id="cajaPeso"> </input>
         <br>
 
-        <label for="Altura">Altura</label>
+        <label for="Altura">Introduce Altura</label>
         <input type="number" id="cajaAltura"> </input>
-        <br>
+        <br><br>
 
         <button type="button" onclick="main()">Click para calcular el IMC!!!</button>
-        <br>
+        <br><br>
 
         <label for="IMC">IMC</label>
         <input type="number" id="cajaIMC"> </input>
@@ -83,11 +89,7 @@
         <input type="text" id="cajaClasificacionIMC"> </input>
         <br>
 
-
-
-
-
-
+        <img src ="nada.png"id="imagenIMC"></img>
 
     </body>
 </html>
