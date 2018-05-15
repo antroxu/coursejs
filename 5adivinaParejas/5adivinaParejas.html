@@ -1,0 +1,109 @@
+<html>
+   <head>
+      <title>
+         P&aacute;gina con Javascript.
+      </title>
+      <script language="javascript">
+
+        onload = inicia;
+        var tocado = false
+        var banderaPrimerClick
+        const N_FILAS = 2
+        const N_COLUMNAS = 4
+        var n_parejas = (N_FILAS * N_COLUMNAS)/2
+        var parejas_encontradas = 0
+
+        function escribeMensaje(mensaje)
+        {
+            document.getElementById("Mensaje").value = mensaje;
+        };
+
+
+        function inicia()
+        {
+            escribeMensaje ("Mensaje de inicio");
+            var lista_tds = document.querySelectorAll("td");
+            for (var i = 0; i < lista_tds.length; i++)
+                {
+                //Programo evento
+                lista_tds[i].addEventListener('click', clickBandera);
+                //Oculto imagen
+                lista_tds[i].firstElementChild.style.visibility = 'hidden';
+                }
+        }
+
+        function clickBandera(evento)
+        {
+            //target, es el elemento tocado
+            //currentTarget, es el elemento contenedor
+            var img_tocado = evento.currentTarget.firstElementChild; //obtener elemento tocado
+            //var estilo = img_tocado.style.visibility;
+            if (!tocado) //Primer click
+            {
+                img_tocado.style.visibility = 'visible';
+                banderaPrimerClick =  img_tocado;
+                tocado = !tocado;
+            }
+            else //Segundo click
+            {
+                img_tocado.style.visibility = 'visible';
+                if (banderaPrimerClick.src == img_tocado.src) //Pareja igual
+                {
+                    parejas_encontradas ++
+                    if (parejas_encontradas == n_parejas) //FIN
+                    {
+                        escribeMensaje ("Felicidades, has encontrado todas las parejas");
+                        //Desprogramar eventos de la pareja
+                        //banderaPrimerClick
+                        //img_tocado
+                    }
+                    else //Seguimos buscando parejas
+                    {
+                        tocado = !tocado
+                    }
+                }    
+                else //parejas diferentes
+                {
+                    //Ocultar imagenes
+                    //Retraso de 3 segundos
+                    banderaPrimerClick.style.visibility = 'hidden'
+                    img_tocado.style.visibility = 'hidden'
+                    tocado = !tocado
+                }
+                
+            }
+
+            /*if (estilo == 'visible' || estilo == '')
+            {
+                img_tocado.style.visibility = 'hidden';
+            }
+            else
+            {
+            img_tocado.style.visibility = 'visible';
+            }*/
+        }
+      </script>
+   </head>
+   <body>
+        <table>
+            <tr>
+                <td><img src="bandera1.png"></td>
+                <td><img src="bandera2.png"></td>
+                <td><img src="bandera3.png"></td>
+                <td><img src="bandera4.png"></td>
+            </tr>
+            <tr>
+                <td><img src="bandera2.png"></td>
+                <td><img src="bandera1.png"></td>
+                <td><img src="bandera4.png"></td>
+                <td><img src="bandera3.png"></td>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+
+        <input type="text" id="Mensaje" size=50> </input>
+
+   </body>
+</html>
