@@ -5,57 +5,102 @@
       </title>
       <script language="javascript">
 
-        onload = inicia;
-        var tocado = false
-        var banderaPrimerClick
-        const N_FILAS = 2
-        const N_COLUMNAS = 4
-        var n_parejas = (N_FILAS * N_COLUMNAS)/2
-        var parejas_encontradas = 0
+        var tocado = false;
+        var banderaPrimerClick;
+        var banderaSegundoClick;
+        const N_FILAS = 4;
+        const N_COLUMNAS = 4;
+        var n_parejas = (N_FILAS * N_COLUMNAS)/2;
+        var parejas_encontradas = 0;
+        var parejas_que_quedan = n_parejas
 
-        function escribeMensaje(mensaje)
+
+
+        function sleep()
         {
-            document.getElementById("Mensaje").value = mensaje;
+            for (var i = 0; i < 10000; i++)
+            {
+                console.log ("Hola");
+            }
+        }
+
+               
+        function mostrarBandera(bandera)
+        {
+            bandera.style.visibility = "visible";
+        };
+
+        function ocultarBandera(bandera)
+        {
+            bandera.style.visibility = "hidden";
+        };
+        
+        function ocultarDosBanderas(bandera1, bandera2)
+        {
+            ocultarBandera(bandera1);
+            ocultarBandera(bandera2);
+        };       
+        
+        
+        function escribeMensaje(mensaje, id)
+        {
+            document.getElementById(id).value = mensaje;
         };
 
 
         function inicia()
         {
-            escribeMensaje ("Mensaje de inicio");
+            //Inicializo variables
+            tocado = false;
+            parejas_encontradas = 0;
+            parejas_que_quedan = n_parejas;
+
+            escribeMensaje ("Mensaje de inicio", "cajaMensaje");
+            escribeMensaje ("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
             var lista_tds = document.querySelectorAll("td");
             for (var i = 0; i < lista_tds.length; i++)
                 {
                 //Programo evento
                 lista_tds[i].addEventListener('click', clickBandera);
                 //Oculto imagen
-                lista_tds[i].firstElementChild.style.visibility = 'hidden';
+                ocultarBandera( lista_tds[i].firstElementChild);
                 }
         }
 
         function clickBandera(evento)
         {
-            //target, es el elemento tocado
-            //currentTarget, es el elemento contenedor
-            var img_tocado = evento.currentTarget.firstElementChild; //obtener elemento tocado
-            //var estilo = img_tocado.style.visibility;
+            var estilo = evento.currentTarget.firstElementChild.style.visibility
+            // if (!(estilo == 'visible' || estilo == ''))
+            if (estilo == 'hidden')
+                procesaClick(evento); 
+        }
+
+
+        function procesaClick(evento)
+        {
             if (!tocado) //Primer click
             {
-                img_tocado.style.visibility = 'visible';
-                banderaPrimerClick =  img_tocado;
+                //target, es el elemento tocado
+                //currentTarget, es el elemento contenedor
+                //obtener elemento tocado
+                banderaPrimerClick =  evento.currentTarget.firstElementChild; 
+                mostrarBandera(banderaPrimerClick);
                 tocado = !tocado;
             }
             else //Segundo click
             {
-                img_tocado.style.visibility = 'visible';
-                if (banderaPrimerClick.src == img_tocado.src) //Pareja igual
+                banderaSegundoClick =  evento.currentTarget.firstElementChild; 
+                mostrarBandera(banderaSegundoClick);
+                //alert ("hola");
+                if (banderaPrimerClick.src == banderaSegundoClick.src) //Pareja igual
                 {
-                    parejas_encontradas ++
+                    parejas_encontradas ++; //Incrmento las parejas encontradas
+                    parejas_que_quedan --; //Decremento las parejas que quedan
+                    escribeMensaje ("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
                     if (parejas_encontradas == n_parejas) //FIN
                     {
-                        escribeMensaje ("Felicidades, has encontrado todas las parejas");
-                        //Desprogramar eventos de la pareja
-                        //banderaPrimerClick
-                        //img_tocado
+                        escribeMensaje ("Felicidades, has encontrado todas las parejas", "cajaMensaje");
+                        //Como se desprograman eventos de la pareja???
                     }
                     else //Seguimos buscando parejas
                     {
@@ -66,44 +111,54 @@
                 {
                     //Ocultar imagenes
                     //Retraso de 3 segundos
-                    banderaPrimerClick.style.visibility = 'hidden'
-                    img_tocado.style.visibility = 'hidden'
+                    //var timeoutID = window.setTimeout(func_nada, 1000);
+                    //sleep();
+                    ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick);
                     tocado = !tocado
                 }
                 
             }
-
-            /*if (estilo == 'visible' || estilo == '')
-            {
-                img_tocado.style.visibility = 'hidden';
-            }
-            else
-            {
-            img_tocado.style.visibility = 'visible';
-            }*/
         }
       </script>
    </head>
    <body>
-        <table>
+        <table border = 1>
+            <tr>
+                <td><img src="bandera5.png"></td>
+                <td><img src="bandera2.png"></td>
+                <td><img src="bandera6.png"></td>
+                <td><img src="bandera6.png"></td>
+            </tr>
             <tr>
                 <td><img src="bandera1.png"></td>
-                <td><img src="bandera2.png"></td>
+                <td><img src="bandera5.png"></td>
+                <td><img src="bandera8.png"></td>
+                <td><img src="bandera7.png"></td>
+            </tr>
+            <tr>
                 <td><img src="bandera3.png"></td>
+                <td><img src="bandera7.png"></td>
+                <td><img src="bandera2.png"></td>
                 <td><img src="bandera4.png"></td>
             </tr>
             <tr>
-                <td><img src="bandera2.png"></td>
+                <td><img src="bandera8.png"></td>
                 <td><img src="bandera1.png"></td>
-                <td><img src="bandera4.png"></td>
                 <td><img src="bandera3.png"></td>
+                <td><img src="bandera4.png"></td>
             </tr>
         </table>
 
         <br>
         <br>
 
-        <input type="text" id="Mensaje" size=50> </input>
+        <input type="text" id="cajaMensaje" size=50> </input>
+        <br>
+        <br>
+        <input type="text" id="cajaParejasQueQuedan" size=50> </input>
+        <br>
+        <br>
+        <button type="button" onclick="inicia()">Click para empezar el juego!</button>
 
    </body>
 </html>
