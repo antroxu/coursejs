@@ -1,14 +1,74 @@
 <html>
-   <head>
-      <title>
-         P&aacute;gina con Javascript.
-      </title>
-      <script language="javascript">
-         <!--
 
-         //-->
-      </script>
-   </head>
-   <body>
-   </body>
+<head>
+    <title>
+        P&aacute;gina con Javascript.
+    </title>
+    <script language="javascript">
+        onload = inicio
+
+        function inicio() {
+            var a = rellenaArrayIndices(10)
+            var a2 = rellenaArrayBanderas(10, 20)
+        }
+
+
+        function rellenaArrayIndices(longitud) {
+            //Declaro array
+            var array = [];
+
+            //Relleno array con indices
+            for (i = 1; i <= longitud; i++) {
+                //Añadir elemento al array
+                array.push(i);
+            }
+            return array;
+        }
+
+
+        /*
+       Funcionalidad: Devuelve un numero aleatorio comprendido entre 1 y un numero dado
+       Entrada: Numero dado, limite suprior
+       Salida: Numero aleatorio 
+       Precondiciones
+       Postocondiciones
+       */
+        function tomaNumeroAleatorio(numero) {
+            //Obtengo un numero entre 1 y el paramatrode entrada de forma aleatoria
+            var num = Math.ceil(Math.random() * numero);
+
+            //Devuelvo el numero aleatorio
+            return num
+        }
+
+        function rellenaArrayBanderas(longitud, n_banderas) {
+            //Declaro array
+            var array = [];
+            var iBandera
+
+            //Relleno array con indices
+            for (i = 1; i <= longitud; i = i + 2) {
+
+                console.log(i);
+
+
+                //Obtengo bandera de forma aleatoria
+                iBandera = tomaNumeroAleatorio(n_banderas);
+
+                //Añadir dos banderas igualese
+                array.push(iBandera);
+                array.push(iBandera);
+            }
+            return array;
+        }
+
+
+
+
+    </script>
+</head>
+
+<body>
+</body>
+
 </html>

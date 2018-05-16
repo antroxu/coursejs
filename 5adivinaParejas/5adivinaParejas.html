@@ -1,8 +1,9 @@
 <html>
    <head>
       <title>
-         P&aacute;gina con Javascript.
+            Adivina Parejas
       </title>
+      <link rel="stylesheet" type = "text/css" href = "estilo.css">
       <script language="javascript">
 
         var tocado = false;
@@ -10,24 +11,127 @@
         var banderaSegundoClick;
         const N_FILAS = 4;
         const N_COLUMNAS = 4;
+        const N_BANDERAS = 20;
         var n_parejas = (N_FILAS * N_COLUMNAS)/2;
         var parejas_encontradas = 0;
         var parejas_que_quedan = n_parejas
 
-        var arrayIndices = [1, 2]
-        var arrayBanderas = [1, 1]
-
-        
-
-
-
-        function sleep()
+        function rellenaArrayIndices(longitud)
         {
-            for (var i = 0; i < 10000; i++)
+            //Declaro array
+            var array = [];
+
+            //Relleno array con indices
+            for (i = 1; i <= longitud; i++)
             {
-                console.log ("Hola");
+                //Añadir elemento al array
+                array.push(i);
             }
+            return array;
         }
+
+
+        /*
+       Funcionalidad: Devuelve un numero aleatorio comprendido entre 1 y un numero dado
+       Entrada: Numero dado, limite suprior
+       Salida: Numero aleatorio 
+       Precondiciones
+       Postocondiciones
+       */
+        function tomaNumeroAleatorio(numero)
+        {
+            //Obtengo un numero entre 1 y el paramatrode entrada de forma aleatoria
+            var num = Math.ceil(Math.random() * numero);
+
+            //Devuelvo el numero aleatorio
+            return num
+        }
+
+        function rellenaArrayBanderas(longitud, n_banderas)
+        {
+            //Declaro array
+            var array = [];
+            var iBandera
+
+            //Relleno array con indices
+            for (i = 1; i <= longitud; i = i + 2)
+            {
+
+                console.log(i);
+
+
+                //Obtengo bandera de forma aleatoria
+                iBandera = tomaNumeroAleatorio(n_banderas);
+
+                //Añadir dos banderas igualese
+                array.push(iBandera);
+                array.push(iBandera);
+            }
+            return array;
+        }
+
+        function barajarBanderas()
+        {
+            var arrayIndices = []
+            var arrayBanderas = []
+
+            var i1
+            var i2
+
+            arrayIndices = rellenaArrayIndices(N_FILAS * N_COLUMNAS)
+            arrayBanderas = ellenaArrayBanderas(N_FILAS * N_COLUMNAS, N_BANDERAS)
+
+            //Barajar array de Indices
+            for (i=1; i<=100; i++)
+            {
+                
+                //Toma dos indices aleatorios
+                i1 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS);
+                i2 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS);
+
+                //Intercambia el contenido
+                aux = arrayIndices[i1]
+                arrayIndices[i1] = arrayIndices[i2]
+                arrayIndices[i2] = aux
+            }
+
+
+            //Barajar array de Banderas
+
+        }
+
+        function intercambiaBanderas (bandera1, bandera2)
+        {
+            var aux
+
+            aux = bandera1.src
+            bandera1.src = bandera2.src
+            bandera2.src = aux
+
+        }
+
+        function barajarBanderas2(listaTDsTabla)
+        {
+            var i1
+            var i2
+
+            //Barajar banderas
+            for (i=1; i<=100; i++)
+            {
+                
+                //Toma dos indices aleatorios
+                i1 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS)-1;
+                i2 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS)-1;
+
+                //Intercambia el contenido
+                intercambiaBanderas (listaTDsTabla[i1].firstElementChild, listaTDsTabla[i2].firstElementChild)
+            }
+
+        }
+
+
+
+
 
                
         function mostrarBandera(bandera)
@@ -63,6 +167,10 @@
             escribeMensaje ("Mensaje de inicio", "cajaMensaje");
             escribeMensaje ("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
             var lista_tds = document.querySelectorAll("td");
+
+            //Barajar baderas
+            barajarBanderas2 (lista_tds)
+
             for (var i = 0; i < lista_tds.length; i++)
                 {
                 //Programo evento
@@ -70,6 +178,8 @@
                 //Oculto imagen
                 ocultarBandera( lista_tds[i].firstElementChild);
                 }
+
+            
         }
 
         function clickBandera(evento)
@@ -97,7 +207,12 @@
                 banderaSegundoClick =  evento.currentTarget.firstElementChild; 
                 mostrarBandera(banderaSegundoClick);
                 //alert ("hola");
-                if (banderaPrimerClick.src == banderaSegundoClick.src) //Pareja igual
+
+                var imagenPrimerClick = banderaPrimerClick.src
+                var imagenSegundoClick = banderaSegundoClick.src
+                
+                //if (banderaPrimerClick.src == banderaSegundoClick.src) //Pareja igual
+                if (imagenPrimerClick.localeCompare(imagenSegundoClick) == 0) //Pareja igual???
                 {
                     parejas_encontradas ++; //Incrmento las parejas encontradas
                     parejas_que_quedan --; //Decremento las parejas que quedan
@@ -105,6 +220,9 @@
                     if (parejas_encontradas == n_parejas) //FIN
                     {
                         escribeMensaje ("Felicidades, has encontrado todas las parejas", "cajaMensaje");
+                        
+                        //Hacer pagina html con felicidades... ejemplo con la pagina de la cnn
+                        location.href = "https://www.cnn.com"
                         //Como se desprograman eventos de la pareja???
                     }
                     else //Seguimos buscando parejas
@@ -116,9 +234,9 @@
                 {
                     //Ocultar imagenes
                     //Retraso de 3 segundos
-                    //var timeoutID = window.setTimeout(func_nada, 1000);
+                    setTimeout("ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick)", 500);
                     //sleep();
-                    ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick);
+                    //ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick);
                     tocado = !tocado
                 }
                 
@@ -129,28 +247,28 @@
    <body>
         <table border = 1>
             <tr>
-                <td><img src="bandera5.png"></td>
-                <td><img src="bandera2.png"></td>
-                <td><img src="bandera6.png"></td>
-                <td><img src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
             </tr>
             <tr>
-                <td><img src="bandera1.png"></td>
-                <td><img src="bandera5.png"></td>
-                <td><img src="bandera8.png"></td>
-                <td><img src="bandera7.png"></td>
+                <td><img height = 50 width = 50 src="bandera1.png"></td>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera8.png"></td>
+                <td><img height = 50 width = 50 src="bandera7.png"></td>
             </tr>
             <tr>
-                <td><img src="bandera3.png"></td>
-                <td><img src="bandera7.png"></td>
-                <td><img src="bandera2.png"></td>
-                <td><img src="bandera4.png"></td>
+                <td><img height = 50 width = 50 src="bandera3.png"></td>
+                <td><img height = 50 width = 50 src="bandera7.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera4.png"></td>
             </tr>
             <tr>
-                <td><img src="bandera8.png"></td>
-                <td><img src="bandera1.png"></td>
-                <td><img src="bandera3.png"></td>
-                <td><img src="bandera4.png"></td>
+                <td><img height = 50 width = 50 src="bandera8.png"></td>
+                <td><img height = 50 width = 50 src="bandera1.png"></td>
+                <td><img height = 50 width = 50 src="bandera3.png"></td>
+                <td><img height = 50 width = 50 src="bandera4.png"></td>
             </tr>
         </table>
 
