@@ -9,8 +9,8 @@
         var tocado = false;
         var banderaPrimerClick;
         var banderaSegundoClick;
-        const N_FILAS = 4;
-        const N_COLUMNAS = 4;
+        const N_FILAS = 10;
+        const N_COLUMNAS = 10;
         const N_BANDERAS = 20;
         var n_parejas = (N_FILAS * N_COLUMNAS)/2;
         var parejas_encontradas = 0;
@@ -40,7 +40,7 @@
        */
         function tomaNumeroAleatorio(numero)
         {
-            //Obtengo un numero entre 1 y el paramatrode entrada de forma aleatoria
+            //Obtengo un numero entre 1 y el paramatro de entrada de forma aleatoria
             var num = Math.ceil(Math.random() * numero);
 
             //Devuelvo el numero aleatorio
@@ -102,7 +102,7 @@
 
         function intercambiaBanderas (bandera1, bandera2)
         {
-            var aux
+            var aux = "aqui va una bandera"
 
             aux = bandera1.src
             bandera1.src = bandera2.src
@@ -128,9 +128,18 @@
             }
 
         }
+        
+        function rellenaTablaBanderas(listaTDsTabla, n_banderas)
+        {
+            var num_aleatorio = 0
 
-
-
+            for (var i= 0; i<listaTDsTabla.length; i = i + 2)
+            {
+                num_aleatorio =  tomaNumeroAleatorio(20);
+                listaTDsTabla[i].firstElementChild.src = "bandera" + num_aleatorio + ".png";
+                listaTDsTabla[i+1].firstElementChild.src = "bandera" + num_aleatorio + ".png";
+            }
+        }
 
 
                
@@ -168,16 +177,19 @@
             escribeMensaje ("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
             var lista_tds = document.querySelectorAll("td");
 
+            //Rellena la tabla con parejas de banderas. Las banderas las elige de forma aleatoria entre las 20 existentes
+            rellenaTablaBanderas(lista_tds, N_BANDERAS)
+
             //Barajar baderas
             barajarBanderas2 (lista_tds)
 
             for (var i = 0; i < lista_tds.length; i++)
-                {
+            {
                 //Programo evento
                 lista_tds[i].addEventListener('click', clickBandera);
                 //Oculto imagen
                 ocultarBandera( lista_tds[i].firstElementChild);
-                }
+            }
 
             
         }
@@ -251,24 +263,120 @@
                 <td><img height = 50 width = 50 src="bandera2.png"></td>
                 <td><img height = 50 width = 50 src="bandera6.png"></td>
                 <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
             </tr>
             <tr>
-                <td><img height = 50 width = 50 src="bandera1.png"></td>
                 <td><img height = 50 width = 50 src="bandera5.png"></td>
-                <td><img height = 50 width = 50 src="bandera8.png"></td>
-                <td><img height = 50 width = 50 src="bandera7.png"></td>
-            </tr>
-            <tr>
-                <td><img height = 50 width = 50 src="bandera3.png"></td>
-                <td><img height = 50 width = 50 src="bandera7.png"></td>
                 <td><img height = 50 width = 50 src="bandera2.png"></td>
-                <td><img height = 50 width = 50 src="bandera4.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
             </tr>
             <tr>
-                <td><img height = 50 width = 50 src="bandera8.png"></td>
-                <td><img height = 50 width = 50 src="bandera1.png"></td>
-                <td><img height = 50 width = 50 src="bandera3.png"></td>
-                <td><img height = 50 width = 50 src="bandera4.png"></td>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+            </tr>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+            </tr>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+            </tr>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+            </tr>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+            </tr>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+            </tr>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+            </tr>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
+                <td><img height = 50 width = 50 src="bandera6.png"></td>
             </tr>
         </table>
 
