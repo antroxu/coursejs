@@ -15,17 +15,30 @@
           function borraFila (evento)
           {
 
-              //Determinar en que posicion esta
+              
               var tabla = document.getElementById("tabla");
-              var lista_trs = document.querySelectorAll("tr");
               var fila = evento.currentTarget;
-
-              var i = 0;
+              
+              
+              //Determinar en que posicion esta de la tabla para borralo del array
+              // 1) Obtengo todos los elementos de tipo tr
+              var lista_trs = tabla.querySelectorAll("tr");
+              
+              // 2) Hago una busqueda del elemento para determinar en que posicion esta
+              /*var i = 0;
               while (lista_trs[i] != fila)
               {
                   i++;
-              }
-              
+              }*/
+
+              for (var i = 0; lista_trs[i] != fila; i++);
+
+              // 3) Borro el elemento del array que esta en la posicón encontrada en el paso 2
+              arrayElementos.splice(i, 1);
+
+              console.log (arrayElementos);
+
+              // Borro la fila de la tabla
               fila.remove();
           }
 
@@ -48,7 +61,8 @@
           function insertaElementoArray()
           {
             var texto = document.getElementById("cajaTexto").value;
-            arrayElementos.push(texto)
+            arrayElementos.push(texto);
+            console.log (arrayElementos);
 
           }
 
