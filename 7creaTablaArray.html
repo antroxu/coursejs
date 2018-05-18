@@ -1,0 +1,84 @@
+<!-- /* Caja de texto y un botón
+1) Detecto el evento
+2) Inserto el array
+3) Inserto una fila en la tabla
+-->
+
+<html>
+   <head>
+      <title>
+          Crea Tabla-Array
+      </title>
+      <script>
+          var arrayElementos = new Array()
+
+          function borraFila (evento)
+          {
+
+              //Determinar en que posicion esta
+              var tabla = document.getElementById("tabla");
+              var lista_trs = document.querySelectorAll("tr");
+              var fila = evento.currentTarget;
+
+              var i = 0;
+              while (lista_trs[i] != fila)
+              {
+                  i++;
+              }
+              
+              fila.remove();
+          }
+
+          function insertaElementoTabla(texto)
+          {
+              var tabla = document.getElementById("tabla");
+              var fila = document.createElement ("tr");
+              var columna = document.createElement ("td");
+              var textoCelda = document.createTextNode(texto);
+              
+              tabla.appendChild(fila);
+              fila.appendChild(columna);
+              columna.appendChild(textoCelda);
+
+              //columna.innerText = texto
+              fila.addEventListener('click', borraFila);
+
+          }
+
+          function insertaElementoArray()
+          {
+            var texto = document.getElementById("cajaTexto").value;
+            arrayElementos.push(texto)
+
+          }
+
+          function funInicio()
+          {           
+
+              var texto = document.getElementById("cajaTexto").value;
+
+              if (texto != "")
+              {
+                  insertaElementoTabla(texto);
+                  insertaElementoArray();
+
+                  document.getElementById("cajaTexto").value = "";
+                  document.getElementById("cajaTexto").focus;
+              }
+          }
+         
+      </script>
+   </head>
+   <body>
+       <!--         //-->
+
+        <input type = "text" id = "cajaTexto" onchange = "funInicio()">Introduce texto: </input>
+        <br>
+        <button type = "button" onclick = "funInicio()" id = "boton">Inserta Elemento</button>
+        <br>
+        <br>
+        <table id = "tabla" border = 1>Tabla--->>></table>
+
+
+   </body>
+</html>
