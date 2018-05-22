@@ -12,6 +12,21 @@
       <script>
           var arrayElementos = new Array()
 
+
+
+          //Funcion que devuelve la posicion de un elemento dentro de una lista
+          function buscaIndiceElemento(elemento, lista)
+          {
+              var i = 0;
+
+              while (lista[i] != elemento)
+              {
+                  i++;
+              }
+              
+              return (i);
+          }
+
           function borraFila (evento)
           {
 
@@ -25,13 +40,22 @@
               var lista_trs = tabla.querySelectorAll("tr");
               
               // 2) Hago una busqueda del elemento para determinar en que posicion esta
-              /*var i = 0;
+
+              /*
+              Con while
+              var i = 0;
               while (lista_trs[i] != fila)
               {
                   i++;
-              }*/
-
+              }
+              
+              Con For
               for (var i = 0; lista_trs[i] != fila; i++);
+
+              */
+
+              //Con función
+              var i = buscaIndiceElemento(fila, lista_trs);
 
               // 3) Borro el elemento del array que esta en la posicón encontrada en el paso 2
               arrayElementos.splice(i, 1);
