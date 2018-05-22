@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <title>
+        Slider
+    </title>
+    <script language="javascript">
+        var idReloj;
+        var imagenN = 0;
+        var listaFotos = ["MuebleBlanco.png", "MuebleMarron.png"];
+        const nFotos = 2;
+
+        window.onload = inicia;
+        
+        // Inicializa el valor de la imagen
+        function inicia(){
+        var imagen = document.getElementById("imagen");
+        }
+
+        //Cambia la foto en la imagen. Obtiene la foto del array listaFotos segun el indice pasado
+        function cambiaFoto(fotoN){
+            
+            imagen.src = listaFotos[fotoN];
+            imagenN = fotoN;
+        }
+
+        //Cambia a la siguiente foto
+        function cambiaSgteFoto() {
+            imagenN++;
+
+            if (imagenN==nFotos) imagenN = 0;
+
+            cambiaFoto(imagenN);
+        }
+
+        function playSlider() {
+
+            idReloj = setInterval(cambiaSgteFoto, 1000);
+
+        }
+
+        function stopSlider() {
+
+            clearInterval(idReloj);
+
+        }
+
+    </script>
+</head>
+
+<body>
+    <!--
+         
+
+         //-->
+    <button type="button" onclick="cambiaFoto(0)">Blanco</button>
+
+    <button type="button" onclick="cambiaFoto(1)">Marron</button>
+
+    <button type="button" onclick="playSlider()">Play</button>
+
+    <button type="button" onclick="stopSlider()">Stop</button>
+    <br>
+    <br>
+
+    <img src="MuebleBlanco.png" id="imagen"></img>
+    <br>
+    <br>
+
+
+
+
+
+
+
+</body>
+
+</html>
