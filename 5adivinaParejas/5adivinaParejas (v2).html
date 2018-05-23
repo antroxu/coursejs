@@ -1,0 +1,304 @@
+Poner un timer usando una libreria de javascript
+<html>
+   <head>
+      <title>
+            Adivina Parejas
+      </title>
+      <link rel="stylesheet" type = "text/css" href = "estilo.css">
+      <script src = "../easytimer.js-master/dist/easytimer.js"></script>
+      <script language="javascript">
+
+        var tocado = false;
+        var banderaPrimerClick;
+        var banderaSegundoClick;
+        const N_FILAS = 2;
+        const N_COLUMNAS = 2;
+        const N_BANDERAS = 20;
+        var n_parejas = (N_FILAS * N_COLUMNAS)/2;
+        var parejas_encontradas = 0;
+        var parejas_que_quedan = n_parejas;
+
+        var timer = new Timer();
+
+
+
+
+        function rellenaArrayIndices(longitud)
+        {
+            //Declaro array
+            var array = [];
+
+            //Relleno array con indices
+            for (i = 1; i <= longitud; i++)
+            {
+                //Añadir elemento al array
+                array.push(i);
+            }
+            return array;
+        }
+
+
+        /*
+       Funcionalidad: Devuelve un numero aleatorio comprendido entre 1 y un numero dado
+       Entrada: Numero dado, limite suprior
+       Salida: Numero aleatorio 
+       Precondiciones
+       Postocondiciones
+       */
+        function tomaNumeroAleatorio(numero)
+        {
+            //Obtengo un numero entre 1 y el paramatro de entrada de forma aleatoria
+            var num = Math.ceil(Math.random() * numero);
+
+            //Devuelvo el numero aleatorio
+            return num
+        }
+
+        function rellenaArrayBanderas(longitud, n_banderas)
+        {
+            //Declaro array
+            var array = [];
+            var iBandera
+
+            //Relleno array con indices
+            for (i = 1; i <= longitud; i = i + 2)
+            {
+
+                console.log(i);
+
+
+                //Obtengo bandera de forma aleatoria
+                iBandera = tomaNumeroAleatorio(n_banderas);
+
+                //Añadir dos banderas igualese
+                array.push(iBandera);
+                array.push(iBandera);
+            }
+            return array;
+        }
+
+        function barajarBanderas()
+        {
+            var arrayIndices = []
+            var arrayBanderas = []
+
+            var i1
+            var i2
+
+            arrayIndices = rellenaArrayIndices(N_FILAS * N_COLUMNAS)
+            arrayBanderas = ellenaArrayBanderas(N_FILAS * N_COLUMNAS, N_BANDERAS)
+
+            //Barajar array de Indices
+            for (i=1; i<=100; i++)
+            {
+                
+                //Toma dos indices aleatorios
+                i1 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS);
+                i2 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS);
+
+                //Intercambia el contenido
+                aux = arrayIndices[i1]
+                arrayIndices[i1] = arrayIndices[i2]
+                arrayIndices[i2] = aux
+            }
+
+
+            //Barajar array de Banderas
+
+        }
+
+        function intercambiaBanderas (bandera1, bandera2)
+        {
+            var aux = "aqui va una bandera"
+
+            aux = bandera1.src
+            bandera1.src = bandera2.src
+            bandera2.src = aux
+
+        }
+
+        function barajarBanderas2(listaTDsTabla)
+        {
+            var i1
+            var i2
+
+            //Barajar banderas
+            for (i=1; i<=100; i++)
+            {
+                
+                //Toma dos indices aleatorios
+                i1 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS)-1;
+                i2 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS)-1;
+
+                //Intercambia el contenido
+                intercambiaBanderas (listaTDsTabla[i1].firstElementChild, listaTDsTabla[i2].firstElementChild)
+            }
+
+        }
+        
+        function rellenaTablaBanderas(listaTDsTabla, n_banderas)
+        {
+            var num_aleatorio = 0
+
+            for (var i= 0; i<listaTDsTabla.length; i = i + 2)
+            {
+                num_aleatorio =  tomaNumeroAleatorio(20);
+                listaTDsTabla[i].firstElementChild.src = "bandera" + num_aleatorio + ".png";
+                listaTDsTabla[i+1].firstElementChild.src = "bandera" + num_aleatorio + ".png";
+            }
+        }
+
+
+               
+        function mostrarBandera(bandera)
+        {
+            bandera.style.visibility = "visible";
+        };
+
+        function ocultarBandera(bandera)
+        {
+            bandera.style.visibility = "hidden";
+        };
+        
+        function ocultarDosBanderas(bandera1, bandera2)
+        {
+            ocultarBandera(bandera1);
+            ocultarBandera(bandera2);
+        };       
+        
+        
+        function escribeMensaje(mensaje, id)
+        {
+            document.getElementById(id).value = mensaje;
+        };
+
+        function actualiza_reloj()
+        {
+            document.getElementById("reloj").value = timer.getTimeValues().toString();
+
+        }
+
+
+        function inicia()
+        {
+            //Inicializo variables
+            tocado = false;
+            parejas_encontradas = 0;
+            parejas_que_quedan = n_parejas;
+
+            timer.start();
+
+            timer.addEventListener('secondsUpdated', actualiza_reloj);
+
+            escribeMensaje ("Mensaje de inicio", "cajaMensaje");
+            escribeMensaje ("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
+            var lista_tds = document.querySelectorAll("td");
+
+            //Rellena la tabla con parejas de banderas. Las banderas las elige de forma aleatoria entre las 20 existentes
+            rellenaTablaBanderas(lista_tds, N_BANDERAS)
+
+            //Barajar baderas
+            barajarBanderas2 (lista_tds)
+
+            for (var i = 0; i < lista_tds.length; i++)
+            {
+                //Programo evento
+                lista_tds[i].addEventListener('click', clickBandera);
+                //Oculto imagen
+                ocultarBandera( lista_tds[i].firstElementChild);
+            }
+
+            
+        }
+
+        function clickBandera(evento)
+        {
+            var estilo = evento.currentTarget.firstElementChild.style.visibility
+            // if (!(estilo == 'visible' || estilo == ''))
+            if (estilo == 'hidden')
+                procesaClick(evento); 
+        }
+
+
+        function procesaClick(evento)
+        {
+            if (!tocado) //Primer click
+            {
+                //target, es el elemento tocado
+                //currentTarget, es el elemento contenedor
+                //obtener elemento tocado
+                banderaPrimerClick =  evento.currentTarget.firstElementChild; 
+                mostrarBandera(banderaPrimerClick);
+                tocado = !tocado;
+            }
+            else //Segundo click
+            {
+                banderaSegundoClick =  evento.currentTarget.firstElementChild; 
+                mostrarBandera(banderaSegundoClick);
+                //alert ("hola");
+
+                var imagenPrimerClick = banderaPrimerClick.src
+                var imagenSegundoClick = banderaSegundoClick.src
+                
+                //if (banderaPrimerClick.src == banderaSegundoClick.src) //Pareja igual
+                if (imagenPrimerClick.localeCompare(imagenSegundoClick) == 0) //Pareja igual???
+                {
+                    parejas_encontradas ++; //Incrmento las parejas encontradas
+                    parejas_que_quedan --; //Decremento las parejas que quedan
+                    escribeMensaje ("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
+                    if (parejas_encontradas == n_parejas) //FIN
+                    {
+                        escribeMensaje ("Felicidades, has encontrado todas las parejas en" + timer.getTimeValues().toString(), "cajaMensaje");
+                        
+                        timer.stop();
+                        //Hacer pagina html con felicidades... ejemplo con la pagina de la cnn
+                        //location.href = "https://www.cnn.com"
+                        //Como se desprograman eventos de la pareja???
+                    }
+                    else //Seguimos buscando parejas
+                    {
+                        tocado = !tocado
+                    }
+                }    
+                else //parejas diferentes
+                {
+                    //Ocultar imagenes
+                    //Retraso de 3 segundos
+                    setTimeout("ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick)", 500);
+                    //sleep();
+                    //ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick);
+                    tocado = !tocado
+                }
+                
+            }
+        }
+      </script>
+   </head>
+   <body>
+        <table border = 1>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+            </tr>
+            <tr>
+                <td><img height = 50 width = 50 src="bandera5.png"></td>
+                <td><img height = 50 width = 50 src="bandera2.png"></td>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+
+        <input type="text" id="cajaMensaje" size=50> </input>
+        <br>
+        <br>
+        <input type="text" id="cajaParejasQueQuedan" size=50> </input>
+        <br>
+        <br>
+        <input type="text" id="reloj" size=50> </input>
+        <br>
+        <br>
+        <button type="button" onclick="inicia()">Click para empezar el juego!</button>
+
+   </body>
+</html>

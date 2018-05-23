@@ -69,7 +69,7 @@ var dni = new Dni (350);
 //dni.letra ="K"
 //console.log (dni.numero);
 //console.log (dni);
-//console.log (dni.calcularLetra());
+console.log (dni.calcularLetra());
 
 console.log ("001   ->   " + Dni.esValido(10));
 console.log ("002   ->   " + Dni.esValido("10"));
