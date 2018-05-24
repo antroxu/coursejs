@@ -6,9 +6,27 @@
     </title>
     <script>
         //https://developer.mozilla.org/es/docs/Web/HTML/Elemento/table
-        window.onload = crearTabla()
 
-        function crearTabla() {
+        var tabla;
+
+        window.onload = function () {crearTabla(5, 5);};
+
+        function borrarTabla() {
+            var filas = tabla.querySelectorAll("tr");
+
+            for (var i=0; i<filas.length;i++)
+            {
+                var columnas = filas[i].querySelectorAll("td");
+                for (var j=0; j<columnas.length;j++)
+                    columnas[j].remove;
+                filas[i].remove;
+            }
+
+            tabla.remove;
+        }
+
+        function crearTabla(nFilas, nColumnas) {
+            var body;
             var fila;
             var columna;
             var texto;
@@ -16,12 +34,17 @@
             var i;
             var j;
 
-            var tabla = document.getElementById("tabla");
+            body = document.getElementsByTagName("body")[0];
+            //tabla = document.getElementById("tabla");
 
-            for (i = 1; i <= 2; i++) {
+            tabla = document.createElement("table");
+
+            body.appendChild(tabla);
+
+            for (i = 1; i <= nFilas; i++) {
                 fila = document.createElement("tr");
                 tabla.appendChild(fila);
-                for (j = 1; j <= 2; j++) {
+                for (j = 1; j <= nColumnas; j++) {
                     columna = document.createElement("td");
                     fila.appendChild(columna);
                     texto = "fila: " + i + "Columna: " + j;
@@ -29,16 +52,23 @@
                     columna.appendChild(celda);
                 }
             }
-        }
+        }       
 
 
     </script>
 </head>
 
 <body>
-    <table id="tabla"></table>
+    <button type="button" onclick="crearTabla(10, 10)">Crear tabla</button>
+
+    <button type="button" onclick="borrarTabla()">Borrar tabla</button>
     <!-- 
-    <table id = "tabla" border = 1>Tabla--->>></table>
+    <br>
+    <br>
+    <br>
+    <table id="tabla" border=1> </table>
+    
+    <table id = "tabla" border = 1></table>
     <table id="tabla" align="center" bgcolor="#008000" cellpadding=4 border=1> </table>
         
 
@@ -60,7 +90,7 @@
         
         </tr>
         //-->
-        
+
 </body>
 
 </html>

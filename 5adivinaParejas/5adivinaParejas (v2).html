@@ -17,11 +17,9 @@ Poner un timer usando una libreria de javascript
         var n_parejas = (N_FILAS * N_COLUMNAS)/2;
         var parejas_encontradas = 0;
         var parejas_que_quedan = n_parejas;
+        var semaforo = "verde";
 
         var timer = new Timer();
-
-
-
 
         function rellenaArrayIndices(longitud)
         {
@@ -54,6 +52,7 @@ Poner un timer usando una libreria de javascript
             return num
         }
 
+        /*
         function rellenaArrayBanderas(longitud, n_banderas)
         {
             //Declaro array
@@ -106,6 +105,7 @@ Poner un timer usando una libreria de javascript
             //Barajar array de Banderas
 
         }
+        */
 
         function intercambiaBanderas (bandera1, bandera2)
         {
@@ -122,7 +122,7 @@ Poner un timer usando una libreria de javascript
             var i1
             var i2
 
-            //Barajar banderas
+            //Barajar banderas 100 veces
             for (i=1; i<=100; i++)
             {
                 
@@ -164,6 +164,7 @@ Poner un timer usando una libreria de javascript
         {
             ocultarBandera(bandera1);
             ocultarBandera(bandera2);
+            semaforo = "verde";
         };       
         
         
@@ -177,7 +178,6 @@ Poner un timer usando una libreria de javascript
             document.getElementById("reloj").value = timer.getTimeValues().toString();
 
         }
-
 
         function inicia()
         {
@@ -195,10 +195,10 @@ Poner un timer usando una libreria de javascript
             var lista_tds = document.querySelectorAll("td");
 
             //Rellena la tabla con parejas de banderas. Las banderas las elige de forma aleatoria entre las 20 existentes
-            rellenaTablaBanderas(lista_tds, N_BANDERAS)
+            rellenaTablaBanderas(lista_tds, N_BANDERAS);
 
             //Barajar baderas
-            barajarBanderas2 (lista_tds)
+            barajarBanderas2 (lista_tds);
 
             for (var i = 0; i < lista_tds.length; i++)
             {
@@ -215,7 +215,8 @@ Poner un timer usando una libreria de javascript
         {
             var estilo = evento.currentTarget.firstElementChild.style.visibility
             // if (!(estilo == 'visible' || estilo == ''))
-            if (estilo == 'hidden')
+            console.log (semaforo);
+            if (estilo == 'hidden' && semaforo == "verde")
                 procesaClick(evento); 
         }
 
@@ -264,9 +265,9 @@ Poner un timer usando una libreria de javascript
                 {
                     //Ocultar imagenes
                     //Retraso de 3 segundos
-                    setTimeout("ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick)", 500);
-                    //sleep();
-                    //ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick);
+                    semaforo = "rojo";
+                    setTimeout("ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick)", 3000);
+                    
                     tocado = !tocado
                 }
                 
