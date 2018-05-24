@@ -11,6 +11,7 @@ Poner un timer usando una libreria de javascript
         var tocado = false;
         var banderaPrimerClick;
         var banderaSegundoClick;
+        var tablag;
         const N_FILAS = 2;
         const N_COLUMNAS = 2;
         const N_BANDERAS = 20;
@@ -21,6 +22,56 @@ Poner un timer usando una libreria de javascript
 
         var timer = new Timer();
 
+
+        function borrarTabla(tabla) {
+            var filas = tabla.querySelectorAll("tr");
+
+            for (var i=0; i<filas.length;i++)
+            {
+                var columnas = filas[i].querySelectorAll("td");
+                for (var j=0; j<columnas.length;j++)
+                    columnas[j].remove();
+                filas[i].remove();
+            }
+
+            tabla.remove();
+        }
+        
+        function crearTabla(nFilas, nColumnas) {
+            var body;
+            var tabla;
+            var fila;
+            var columna;
+            var texto;
+            var celda;
+            var i;
+            var j;
+
+            body = document.getElementsByTagName("body")[0];
+            //tabla = document.getElementById("tabla");
+
+            tabla = document.createElement("table");
+
+            tabla.border = 1;
+
+            body.appendChild(tabla);
+
+            for (i = 1; i <= nFilas; i++) {
+                fila = document.createElement("tr");
+                tabla.appendChild(fila);
+                for (j = 1; j <= nColumnas; j++) {
+                    columna = document.createElement("td");
+                    fila.appendChild(columna);
+                    //texto = "fila: " + i + "Columna: " + j;
+                    //celda = document.createTextNode(texto);
+                    //columna.appendChild(celda);
+                }
+            }
+
+            return tabla;
+        }
+        
+        /*
         function rellenaArrayIndices(longitud)
         {
             //Declaro array
@@ -35,8 +86,6 @@ Poner un timer usando una libreria de javascript
             return array;
         }
 
-
-        /*
        Funcionalidad: Devuelve un numero aleatorio comprendido entre 1 y un numero dado
        Entrada: Numero dado, limite suprior
        Salida: Numero aleatorio 
@@ -192,7 +241,10 @@ Poner un timer usando una libreria de javascript
 
             escribeMensaje ("Mensaje de inicio", "cajaMensaje");
             escribeMensaje ("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
-            var lista_tds = document.querySelectorAll("td");
+
+            tablag = crearTabla(N_FILAS, N_COLUMNAS);
+
+            var lista_tds = tablag.querySelectorAll("td");
 
             //Rellena la tabla con parejas de banderas. Las banderas las elige de forma aleatoria entre las 20 existentes
             rellenaTablaBanderas(lista_tds, N_BANDERAS);
@@ -276,20 +328,6 @@ Poner un timer usando una libreria de javascript
       </script>
    </head>
    <body>
-        <table border = 1>
-            <tr>
-                <td><img height = 50 width = 50 src="bandera5.png"></td>
-                <td><img height = 50 width = 50 src="bandera2.png"></td>
-            </tr>
-            <tr>
-                <td><img height = 50 width = 50 src="bandera5.png"></td>
-                <td><img height = 50 width = 50 src="bandera2.png"></td>
-            </tr>
-        </table>
-
-        <br>
-        <br>
-
         <input type="text" id="cajaMensaje" size=50> </input>
         <br>
         <br>

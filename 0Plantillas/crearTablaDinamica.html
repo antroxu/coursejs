@@ -18,11 +18,11 @@
             {
                 var columnas = filas[i].querySelectorAll("td");
                 for (var j=0; j<columnas.length;j++)
-                    columnas[j].remove;
-                filas[i].remove;
+                    columnas[j].remove();
+                filas[i].remove();
             }
 
-            tabla.remove;
+            tabla.remove();
         }
 
         function crearTabla(nFilas, nColumnas) {
@@ -38,6 +38,8 @@
             //tabla = document.getElementById("tabla");
 
             tabla = document.createElement("table");
+
+            tabla.border = 1;
 
             body.appendChild(tabla);
 

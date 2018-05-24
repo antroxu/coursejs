@@ -1,0 +1,74 @@
+<html>
+   <head>
+      <title>
+         Formulario HTTP
+      </title>
+      <script language="javascript">
+        var xmlHttp = new XMLHttpRequest();
+        
+        //10.1.2.10: La IP del server
+        //8080: puerto... de todos los programas que tengo ern el server, el puerto identifica con que programa que quiero comunicar
+        //appwebprofe: programa que voy a usar en el server. Se suele omitir porque solo hay uno
+        //RegistrarPersona: metodo del programa que voy a usar
+        const DIR_SERV = "http://10.1.2.10:8080/appwebprofe/RegistrarPersona"
+          //Comentario
+          /*
+            Comentarios
+          */
+
+          function enviaDatos()
+          {
+            var name = document.getElementById("cajaTextoNombre").value;
+            var age = document.getElementById("cajaTextoEdad").value;
+            var mensaje = "El nombre es " + name + " y la edad " + age;
+
+            console.log (mensaje);
+            
+            //Defino objeto para guardar una persona
+            var persona = {
+              nombre:name,
+              edad:age
+            };
+            
+            //Serializar el objeto persona a JSON
+            var persona_json = JSON.stringify(persona);
+            console.log (persona_json);
+
+            //Preparo la llamada
+            xmlHttp.onreadystatechange = procesarEventos; //Funcion que sera llamada cuando haya respuesta
+            xmlHttp.open('POST', DIR_SERV, true); //true es que va a ser asincrono, casi siempre se pone true por que casi siempre es asincrono
+            xmlHttp.setRequestHeader('Content-Type', 'application/json'); //identifica el MIME type. Le dice al servidor que le estoy enviando, en este caso un JSON
+            xmlHttp.send(persona_json); //Cuerpo del mensaje
+
+          }
+
+          function procesarEventos()
+          {
+
+              console.log ("Procesar eventos invocado " + xmlHttp.readyState);
+              //Valores del readyState - El que me interesa es el 4
+              //0	UNINITIALIZED	-> todavía no se llamó a open().
+              //1	LOADING	-> todavía no se llamó a send().
+              //2	LOADED	-> send() ya fue invocado, y los encabezados y el estado están disponibles.
+              //3	INTERACTIVE	-> Descargando; responseText contiene información parcial.
+              //4	COMPLETED	-> La operación está terminada.
+
+
+          }
+         
+      </script>
+   </head>
+   <body>
+       <!--
+
+         //-->
+         <label for="Nombre">Nombre</label>
+         <input type="text" id="cajaTextoNombre"> </input>
+         <br>
+         <label for="Edad">Edad</label>
+         <input type="text" id="cajaTextoEdad"> </input>
+         <br>
+         <br>
+         <button type="button" onclick="enviaDatos()">Envia Datos</button>
+   </body>
+</html>
