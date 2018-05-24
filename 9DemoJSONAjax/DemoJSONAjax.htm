@@ -53,6 +53,11 @@
               //3	INTERACTIVE	-> Descargando; responseText contiene información parcial.
               //4	COMPLETED	-> La operación está terminada.
 
+              if (xmlHttp.readyState === 4)
+              {
+                console.log (xmlHttp.responseText);
+              }
+
 
           }
          
