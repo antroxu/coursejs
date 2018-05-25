@@ -1,0 +1,150 @@
+<html>
+   <head>
+      <title>
+         Cifrado
+      </title>
+      <script language="javascript">
+        var xmlHttp = new XMLHttpRequest();
+        const DIR_SERV2 = "http://10.1.2.10:8080/appwebprofe/ObtenerClave"
+        //10.1.2.10: La IP del server
+        //8080: puerto... de todos los programas que tengo ern el server, el puerto identifica con que programa que quiero comunicar
+        //appwebprofe: programa que voy a usar en el server. Se suele omitir porque solo hay uno
+        //RegistrarPersona o ObtenerClave: metodo del programa que voy a usar
+
+        const DIR_SERV = "http://10.1.2.10:8080/appwebprofe/"
+        const SERVICIO1 = "RegistrarPersona"
+        const SERVICIO2 = "ObtenerClave"
+        const SERVICIO3 = "EnviarMensaje"
+        var clave;
+
+        window.onload = obtenerClave;
+        console.clear ();
+        
+ 
+
+          function pillaClave()
+          {
+
+              //console.log ("Procesar eventos invocado " + xmlHttp.readyState);
+              //Valores del readyState - El que me interesa es el 4
+              //0	UNINITIALIZED	-> todavía no se llamó a open().
+              //1	LOADING	-> todavía no se llamó a send().
+              //2	LOADED	-> send() ya fue invocado, y los encabezados y el estado están disponibles.
+              //3	INTERACTIVE	-> Descargando; responseText contiene información parcial.
+              //4	COMPLETED	-> La operación está terminada.
+
+              if (xmlHttp.readyState === 4)
+              {
+                //console.log ("La respuesta es :" + xmlHttp.responseText);
+                //console.log ("El status es :" + xmlHttp.status);
+                //console.log ("El status es : \"" + xmlHttp.statusText + "\"");
+                clave = xmlHttp.responseText;
+              }
+
+
+          }
+
+          function obtenerClave ()
+          {
+            //Preparo la llamada
+            xmlHttp.onreadystatechange = pillaClave; //Funcion que sera llamada cuando haya respuesta
+            xmlHttp.open('GET', DIR_SERV2, true); //true es que va a ser asincrono, casi siempre se pone true por que casi siempre es asincrono
+            xmlHttp.send(null);
+          }
+
+          function encriptaTexto(texto, numero)
+          {
+              var textoEncriptado = "";
+              var codigoASCII;
+              var suma = 0;
+
+              for (var i=0; i < texto.length; i++)
+              {
+                  codigoASCII = texto.charCodeAt(i);
+                  suma = parseInt(codigoASCII) + parseInt(clave);
+                  textoEncriptado = textoEncriptado + suma;
+              }              
+
+              return textoEncriptado;
+          }
+
+
+          function procesarEventos()
+          {
+
+              //console.log ("Procesar eventos invocado " + xmlHttp.readyState);
+              //Valores del readyState - El que me interesa es el 4
+              //0	UNINITIALIZED	-> todavía no se llamó a open().
+              //1	LOADING	-> todavía no se llamó a send().
+              //2	LOADED	-> send() ya fue invocado, y los encabezados y el estado están disponibles.
+              //3	INTERACTIVE	-> Descargando; responseText contiene información parcial.
+              //4	COMPLETED	-> La operación está terminada.
+
+              if (xmlHttp.readyState === 4)
+              {
+                console.log ("La respuesta es :" + xmlHttp.responseText);
+                console.log ("El status es :" + xmlHttp.status);
+                console.log ("El status es : \"" + xmlHttp.statusText + "\"");
+              }
+
+
+          }
+
+
+
+
+        function enviarPaqueteTexto (paqueteTxt)
+        {
+            //Serializar el paquete a JSON
+            var paquete_json = JSON.stringify(paqueteTxt);
+            var servicio = DIR_SERV + SERVICIO3;
+
+            //Preparo la llamada
+            xmlHttp.onreadystatechange = procesarEventos; //Funcion que sera llamada cuando haya respuesta
+            xmlHttp.open('POST', servicio, true); //true es que va a ser asincrono, casi siempre se pone true por que casi siempre es asincrono
+            xmlHttp.setRequestHeader('Content-Type', 'application/json'); //identifica el MIME type. Le dice al servidor que le estoy enviando, en este caso un JSON
+            xmlHttp.send(paquete_json); //Cuerpo del mensaje
+
+            //console.log (paquete_json);
+        }
+
+        function enviarTextoEncriptado ()
+        {
+            var inText = document.getElementById("inputText").value;
+            var outText = "";
+            var claveLocal = parseInt(clave, 10);  //Convierte de texto a numero
+
+            //Limpiamos console
+            console.clear ();
+            console.log (inText);
+            
+            //Encriptar texto
+            outText = encriptaTexto(inText, claveLocal);
+
+
+            //Escribir texto en caja HTML
+            document.getElementById("outputText").value = outText;
+            
+            //Enviar texto
+            //Defino objeto para guardar un paquete con el mensaje
+            var pckMensaje = {
+              mensaje_original:inText,
+              mensaje_cifrado:outText,
+              clave: claveLocal
+            };
+            
+            enviarPaqueteTexto (pckMensaje);
+        }
+         
+      </script>
+   </head>
+   <body>
+       <!--
+
+         //-->
+         <textarea id="inputText" rows = 10 cols = 20></textarea>
+         <button type="button" onclick="enviarTextoEncriptado()">Encriptar y Enviar</button>
+         <textarea id="outputText" rows = "10" cols = "20"> </textarea>
+         
+   </body>
+</html>
