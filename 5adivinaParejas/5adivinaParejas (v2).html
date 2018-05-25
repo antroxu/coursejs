@@ -1,4 +1,3 @@
-Poner un timer usando una libreria de javascript
 <html>
    <head>
       <title>
@@ -12,8 +11,8 @@ Poner un timer usando una libreria de javascript
         var banderaPrimerClick;
         var banderaSegundoClick;
         var tablag;
-        const N_FILAS = 2;
-        const N_COLUMNAS = 2;
+        const N_FILAS = 6;
+        const N_COLUMNAS = 6;
         const N_BANDERAS = 20;
         var n_parejas = (N_FILAS * N_COLUMNAS)/2;
         var parejas_encontradas = 0;
@@ -21,6 +20,8 @@ Poner un timer usando una libreria de javascript
         var semaforo = "verde";
 
         var timer = new Timer();
+
+        //window.onload = inicia;
 
 
         function borrarTabla(tabla) {
@@ -43,12 +44,11 @@ Poner un timer usando una libreria de javascript
             var fila;
             var columna;
             var texto;
-            var celda;
+            var imagen;
             var i;
             var j;
 
             body = document.getElementsByTagName("body")[0];
-            //tabla = document.getElementById("tabla");
 
             tabla = document.createElement("table");
 
@@ -62,30 +62,16 @@ Poner un timer usando una libreria de javascript
                 for (j = 1; j <= nColumnas; j++) {
                     columna = document.createElement("td");
                     fila.appendChild(columna);
-                    //texto = "fila: " + i + "Columna: " + j;
-                    //celda = document.createTextNode(texto);
-                    //columna.appendChild(celda);
+                    imagen = document.createElement("img");
+                    columna.appendChild(imagen);
+                    imagen.src = "bandera1.png"
                 }
             }
 
             return tabla;
         }
         
-        /*
-        function rellenaArrayIndices(longitud)
-        {
-            //Declaro array
-            var array = [];
-
-            //Relleno array con indices
-            for (i = 1; i <= longitud; i++)
-            {
-                //Añadir elemento al array
-                array.push(i);
-            }
-            return array;
-        }
-
+       /* 
        Funcionalidad: Devuelve un numero aleatorio comprendido entre 1 y un numero dado
        Entrada: Numero dado, limite suprior
        Salida: Numero aleatorio 
@@ -101,61 +87,6 @@ Poner un timer usando una libreria de javascript
             return num
         }
 
-        /*
-        function rellenaArrayBanderas(longitud, n_banderas)
-        {
-            //Declaro array
-            var array = [];
-            var iBandera
-
-            //Relleno array con indices
-            for (i = 1; i <= longitud; i = i + 2)
-            {
-
-                console.log(i);
-
-
-                //Obtengo bandera de forma aleatoria
-                iBandera = tomaNumeroAleatorio(n_banderas);
-
-                //Añadir dos banderas igualese
-                array.push(iBandera);
-                array.push(iBandera);
-            }
-            return array;
-        }
-
-        function barajarBanderas()
-        {
-            var arrayIndices = []
-            var arrayBanderas = []
-
-            var i1
-            var i2
-
-            arrayIndices = rellenaArrayIndices(N_FILAS * N_COLUMNAS)
-            arrayBanderas = ellenaArrayBanderas(N_FILAS * N_COLUMNAS, N_BANDERAS)
-
-            //Barajar array de Indices
-            for (i=1; i<=100; i++)
-            {
-                
-                //Toma dos indices aleatorios
-                i1 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS);
-                i2 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS);
-
-                //Intercambia el contenido
-                aux = arrayIndices[i1]
-                arrayIndices[i1] = arrayIndices[i2]
-                arrayIndices[i2] = aux
-            }
-
-
-            //Barajar array de Banderas
-
-        }
-        */
-
         function intercambiaBanderas (bandera1, bandera2)
         {
             var aux = "aqui va una bandera"
@@ -163,7 +94,6 @@ Poner un timer usando una libreria de javascript
             aux = bandera1.src
             bandera1.src = bandera2.src
             bandera2.src = aux
-
         }
 
         function barajarBanderas2(listaTDsTabla)
@@ -180,7 +110,7 @@ Poner un timer usando una libreria de javascript
                 i2 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS)-1;
 
                 //Intercambia el contenido
-                intercambiaBanderas (listaTDsTabla[i1].firstElementChild, listaTDsTabla[i2].firstElementChild)
+                intercambiaBanderas (listaTDsTabla[i1].firstElementChild, listaTDsTabla[i2].firstElementChild);
             }
 
         }
@@ -235,12 +165,14 @@ Poner un timer usando una libreria de javascript
             parejas_encontradas = 0;
             parejas_que_quedan = n_parejas;
 
-            timer.start();
 
-            timer.addEventListener('secondsUpdated', actualiza_reloj);
 
             escribeMensaje ("Mensaje de inicio", "cajaMensaje");
             escribeMensaje ("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
+
+            if(tablag != undefined) {
+                borrarTabla (tablag);
+            }
 
             tablag = crearTabla(N_FILAS, N_COLUMNAS);
 
@@ -251,17 +183,49 @@ Poner un timer usando una libreria de javascript
 
             //Barajar baderas
             barajarBanderas2 (lista_tds);
-
+            
+            //Defino listener para cada elemento de la tabla
             for (var i = 0; i < lista_tds.length; i++)
             {
                 //Programo evento
                 lista_tds[i].addEventListener('click', clickBandera);
-                //Oculto imagen
-                ocultarBandera( lista_tds[i].firstElementChild);
             }
+            
+            semaforo = "rojo"
+            //Oculto todas las imagenes despues de 5 segundos
+            //ocultarTodasLasBanderas(lista_tds);
+            setTimeout(function () {ocultarTodasLasBanderas(lista_tds)}, 3000);
 
+
+            //Iicializa cronometro
+            timer.addEventListener('secondsUpdated', actualiza_reloj);
+
+
+
+
+            /*
+            for (var i = 0; i < lista_tds.length; i++)
+            {
+                //Oculto imagen
+                //ocultarBandera(lista_tds[i].firstElementChild);
+            }
+            */
+            
             
         }
+
+        function ocultarTodasLasBanderas(listaTDsTabla)
+        {
+            for (var i= 0; i<listaTDsTabla.length; i++)
+            {
+                //Oculto imagen
+                ocultarBandera(listaTDsTabla[i].firstElementChild);
+            }
+            semaforo = "verde";
+            timer.start();
+        }
+
+
 
         function clickBandera(evento)
         {
@@ -318,7 +282,7 @@ Poner un timer usando una libreria de javascript
                     //Ocultar imagenes
                     //Retraso de 3 segundos
                     semaforo = "rojo";
-                    setTimeout("ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick)", 3000);
+                    setTimeout("ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick)", 500);
                     
                     tocado = !tocado
                 }
