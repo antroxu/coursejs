@@ -5,7 +5,12 @@
     API itunes
   </title>
   <script language="javascript">
-    
+
+    const DIR_SERV = "http://10.1.2.10:8080/appwebprofe/";
+    const SERVICIO1 = "RegistrarPersona";
+    const SERVICIO2 = "ObtenerClave";
+    const SERVICIO3 = "EnviarMensaje";
+    const SERVICIO4 = "Comprar";
     var xmlHttp = new XMLHttpRequest();
     var tabla;
     var JSon;
@@ -21,36 +26,92 @@
 
     var listaDatos =
       ['artistName',
-      'trackId',
-      'artworkUrl100',
-      'trackPrice',
-      'currency',
-      'previewUrl'];
+        'trackId',
+        'artworkUrl100',
+        'trackPrice',
+        'currency',
+        'previewUrl',
+        'comprar?'];
 
-    //10.1.2.10: La IP del server
-    //8080: puerto... de todos los programas que tengo ern el server, el puerto identifica con que programa que quiero comunicar
-    //appwebprofe: programa que voy a usar en el server. Se suele omitir porque solo hay uno
-    //RegistrarPersona o ObtenerClave: metodo del programa que voy a usar
+    var todosLosDatos =
+      ['artistViewUrl', 'artworkUrl30', 'artworkUrl60', 'artworkUrl100', 'collectionCensoredName', 'collectionExplicitness', 'collectionId', 'collectionName', 'collectionPrice',
+        'collectionViewUrl', 'country', 'currency', 'discCount', 'discNumber', 'isStreamable', 'kind', 'previewUrl', 'primaryGenreName', 'releaseDate', 'trackCensoredName',
+        'trackCount', 'trackExplicitness', 'trackId', 'trackName', 'trackNumber', 'trackPrice', 'trackTimeMillis', 'trackViewUrl', 'wrapperType'];
+    function comprarCancion(evento) {
+
+      var celdaLocal = evento.currentTarget //.firstElementChild
+
+      console.log(celdaLocal);
+
+      if (celdaLocal.checked)
+        celdaLocal.className = "checkCompra";
+      else
+        celdaLocal.className = "";
+    }
+
+    function procesarEventos() {
+
+      //console.log ("Procesar eventos invocado " + xmlHttp.readyState);
+      //Valores del readyState - El que me interesa es el 4
+      //0	UNINITIALIZED	-> todavía no se llamó a open().
+      //1	LOADING	-> todavía no se llamó a send().
+      //2	LOADED	-> send() ya fue invocado, y los encabezados y el estado están disponibles.
+      //3	INTERACTIVE	-> Descargando; responseText contiene información parcial.
+      //4	COMPLETED	-> La operación está terminada.
+
+      if (xmlHttp.readyState === 4) {
+        console.log("La respuesta es :" + xmlHttp.responseText);
+        console.log("El status es :" + xmlHttp.status);
+        console.log("El status es : \"" + xmlHttp.statusText + "\"");
+      }
 
 
-    /*
-      Comentarios
-    */
+    }
+
+
+    function comprar() {
+      //Comprobar si la tabla esta vacia
+      var listaChecks = tabla.getElementsByClassName('checkCompra');
+      var precio = 0
+      var arrayElementos = new Array()
+
+      var pckMensaje = {
+        precio_pedido: 0,
+        lista_ids: "",
+      };
+
+      //Recorre todos los elementos seleccionados
+      for (var i = 0; i < listaChecks.length; i++) {
+        precio = precio + parseFloat(listaChecks[i].value);
+        arrayElementos.push(listaChecks[i].id);
+      }
+
+      pckMensaje.lista_ids = arrayElementos;
+      pckMensaje.precio_pedido = precio;
+
+      //Serializar el paquete a JSON
+      var paquete_json = JSON.stringify(pckMensaje);
+      var servicio = DIR_SERV + SERVICIO4;
+
+      //Preparo la llamada
+      xmlHttp.onreadystatechange = procesarEventos; //Funcion que sera llamada cuando haya respuesta
+      xmlHttp.open('POST', servicio, true); //true es que va a ser asincrono, casi siempre se pone true por que casi siempre es asincrono
+      xmlHttp.setRequestHeader('Content-Type', 'application/json'); //identifica el MIME type. Le dice al servidor que le estoy enviando, en este caso un JSON
+      xmlHttp.send(paquete_json); //Cuerpo del mensaje
+    }
+
 
     function activaGIF() {
 
       //Crear imagen con GIF
-      
-      if (!isGIFWorking)
-      {
+
+      if (!isGIFWorking) {
         divGIF = document.createElement("div");
         imagenGIF = document.createElement("img");
         imagenGIF.src = GIF_FILE;
 
         imagenGIF.width = ANCHO_GIF;
         //imagenGIF.height="341";
-
-
 
         divGIF.appendChild(imagenGIF);
         document.body.appendChild(divGIF);
@@ -61,8 +122,8 @@
 
     function deasctivaGIF() {
 
-      imagenGIF.remove ();
-      divGIF.remove ();
+      imagenGIF.remove();
+      divGIF.remove();
       isGIFWorking = false;
 
     }
@@ -80,57 +141,26 @@
       tablaLocal.remove();
     }
 
+
+    //Crea una cabecera con los nombres de los campos en la tabla donde se mostraran las canciones
     function crearCabecera(tablaLocal) {
       var filaLocal;
       var columnaLocal;
       var celdaLocal;
+      var i;
+      var n_campos = listaDatos.length;
 
       filaLocal = document.createElement("tr");
       tablaLocal.appendChild(filaLocal);
 
-      //Añade artistName
-      columnaLocal = document.createElement("td");
-      filaLocal.appendChild(columnaLocal);
-      celdaLocal = document.createTextNode("artistName");
-      columnaLocal.appendChild(celdaLocal);
-
-      //Añade trackId
-      columnaLocal = document.createElement("td");
-      filaLocal.appendChild(columnaLocal);
-      celdaLocal = document.createTextNode("trackId");
-      columnaLocal.appendChild(celdaLocal);
-      columnaLocal.style.display = "none";
-
-      //Añade artworkUrl100
-      columnaLocal = document.createElement("td");
-      filaLocal.appendChild(columnaLocal);
-      celdaLocal = document.createTextNode("artworkUrl100");
-      columnaLocal.appendChild(celdaLocal);
-
-      //Añade trackPrice
-      columnaLocal = document.createElement("td");
-      filaLocal.appendChild(columnaLocal);
-      celdaLocal = document.createTextNode("trackPrice");
-      columnaLocal.appendChild(celdaLocal);
-
-      //Añade trackPrice + 2
-      columnaLocal = document.createElement("td");
-      filaLocal.appendChild(columnaLocal);
-      celdaLocal = document.createTextNode("trackPrice + 2");
-      columnaLocal.appendChild(celdaLocal);
-
-      //Añade currency
-      columnaLocal = document.createElement("td");
-      filaLocal.appendChild(columnaLocal);
-      celdaLocal = document.createTextNode("currency");
-      columnaLocal.appendChild(celdaLocal);
-
-      //Añade previewUrl
-      columnaLocal = document.createElement("td");
-      filaLocal.appendChild(columnaLocal);
-      celdaLocal = document.createTextNode("previewUrl");
-      columnaLocal.appendChild(celdaLocal);
-
+      for (i = 0; i < n_campos; i++) {
+        columnaLocal = document.createElement("td");
+        filaLocal.appendChild(columnaLocal);
+        celdaLocal = document.createTextNode(listaDatos[i]);
+        columnaLocal.appendChild(celdaLocal);
+        if (i === 1)
+          columnaLocal.style.display = "none";
+      }
     }
 
     function pintaCanciones() {
@@ -140,9 +170,11 @@
       var celda;
       var valor;
       var i;
+      var trackIDLocal;
+      var trackPriceLocal;
 
       if (xmlHttp.readyState != 4) {
-        activaGIF ();
+        activaGIF();
       }
 
 
@@ -151,9 +183,9 @@
 
         if (document.getElementById("cajaGIF").checked)
           // Si no se pone un retardo no se ve el GIF
-          setTimeout(function () {deasctivaGIF ()}, RETARDO);
+          setTimeout(function () { deasctivaGIF() }, RETARDO);
         else
-          deasctivaGIF ();
+          deasctivaGIF();
 
         JSon = xmlHttp.responseText;
         resultadoBusqueda = JSON.parse(JSon);
@@ -169,8 +201,8 @@
         if (resultadoBusqueda.resultCount != 0)
           crearCabecera(tabla);
         else {
-          console.log ("No hay resultados");
-          window.alert ("No hay resultados");
+          console.log("No hay resultados");
+          window.alert("No hay resultados");
         }
 
         for (i in resultadoBusqueda.results) {
@@ -186,10 +218,10 @@
           console.log(valor);
 
           //Añade trackId oculto
-          valor = resultadoBusqueda.results[i].trackId;
+          trackIdLocal = resultadoBusqueda.results[i].trackId;
           columna = document.createElement("td");
           fila.appendChild(columna);
-          celda = document.createTextNode(valor);
+          celda = document.createTextNode(trackIdLocal);
           columna.style.display = "none";
 
           columna.appendChild(celda);
@@ -204,19 +236,11 @@
           columna.appendChild(celda);
           console.log(valor);
 
-          //Añade trackPrice
-          valor = parseFloat(resultadoBusqueda.results[i].trackPrice);
+          //Añade trackPrice (+ 2)
+          trackPriceLocal = parseFloat(resultadoBusqueda.results[i].trackPrice) + 2;
           columna = document.createElement("td");
           fila.appendChild(columna);
-          celda = document.createTextNode(valor);
-          columna.appendChild(celda);
-          console.log(valor);
-
-          //Añade trackPrice + 2
-          valor = parseFloat(resultadoBusqueda.results[i].trackPrice) + 2;
-          columna = document.createElement("td");
-          fila.appendChild(columna);
-          celda = document.createTextNode(valor);
+          celda = document.createTextNode(trackPriceLocal);
           columna.appendChild(celda);
           console.log(valor);
 
@@ -237,47 +261,24 @@
           celda.controls = true;
           columna.appendChild(celda);
           console.log(valor);
+
+          //Añade checkbox
+          columna = document.createElement("td");
+          fila.appendChild(columna);
+          celda = document.createElement("input");
+          celda.type = "checkbox";
+          celda.value = trackPriceLocal;
+          celda.id = trackIdLocal;
+          //celda.className = "checkCompra";
+          //celda.onclick = "comprarCancion()";
+          //celda.setAttribute("onclick", "comprarCancion()");
+          //Programo evento
+          celda.addEventListener('click', comprarCancion);
+          columna.appendChild(celda);
+          console.log(valor);
         }
 
       }
-
-      /*
-      artistViewUrl
-      artworkUrl30
-      artworkUrl60
-      artworkUrl100
-      collectionCensoredName
-      collectionExplicitness
-      collectionId
-      collectionName
-      collectionPrice
-      collectionViewUrl
-      country
-      currency
-      discCount
-      discNumber
-      isStreamable
-      kind
-      previewUrl
-      primaryGenreName
-      releaseDate
-      trackCensoredName
-      trackCount
-      trackExplicitness
-      trackId
-      trackName
-      trackNumber
-      trackPrice
-      trackTimeMillis
-      trackViewUrl
-      wrapperType
-      */
-
-
-
-
-
-
     }
 
 
@@ -309,33 +310,11 @@
   <button type="button" onclick="inicio()">Click para buscar en iTunes</button>
   <br>
   <br>
+  <button type="button" onclick="comprar()">Click para comprar</button>
+  <br>
+  <br>
 
   <!--
-
-        <label for="Peso">Introduce Peso</label>
-        <input type="number" id="cajaPeso"> </input>
-        <br>
-
-        <label for="Altura">Introduce Altura</label>
-        <input type="number" id="cajaAltura"> </input>
-        <br><br>
-
-        <button type="button" onclick="main()">Click para calcular el IMC!!!</button>
-        <br><br>
-
-        <label for="IMC">IMC</label>
-        <input type="number" id="cajaIMC"> </input>
-        <br>
-
-        <label for="clasificacionIMC">Clasificacion IMC</label>
-        <input type="text" id="cajaClasificacionIMC"> </input>
-        <br>
-
-        <img src ="nada.png"id="imagenIMC"></img>
-
-
-
-
 
 
          //-->
