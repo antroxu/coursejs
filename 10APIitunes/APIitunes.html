@@ -72,32 +72,36 @@
     function comprar() {
       //Comprobar si la tabla esta vacia
       var listaChecks = tabla.getElementsByClassName('checkCompra');
-      var precio = 0
-      var arrayElementos = new Array()
 
-      var pckMensaje = {
-        precio_pedido: 0,
-        lista_ids: "",
-      };
+      if (listaChecks.length != 0){
 
-      //Recorre todos los elementos seleccionados
-      for (var i = 0; i < listaChecks.length; i++) {
-        precio = precio + parseFloat(listaChecks[i].value);
-        arrayElementos.push(listaChecks[i].id);
+        var precio = 0
+        var arrayElementos = new Array()
+
+        var pckMensaje = {
+          precio_pedido: 0,
+          lista_ids: "",
+        };
+
+        //Recorre todos los elementos seleccionados
+        for (var i = 0; i < listaChecks.length; i++) {
+          precio = precio + parseFloat(listaChecks[i].value);
+          arrayElementos.push(listaChecks[i].id);
+        }
+
+        pckMensaje.lista_ids = arrayElementos;
+        pckMensaje.precio_pedido = precio;
+
+        //Serializar el paquete a JSON
+        var paquete_json = JSON.stringify(pckMensaje);
+        var servicio = DIR_SERV + SERVICIO4;
+
+        //Preparo la llamada
+        xmlHttp.onreadystatechange = procesarEventos; //Funcion que sera llamada cuando haya respuesta
+        xmlHttp.open('POST', servicio, true); //true es que va a ser asincrono, casi siempre se pone true por que casi siempre es asincrono
+        xmlHttp.setRequestHeader('Content-Type', 'application/json'); //identifica el MIME type. Le dice al servidor que le estoy enviando, en este caso un JSON
+        xmlHttp.send(paquete_json); //Cuerpo del mensaje
       }
-
-      pckMensaje.lista_ids = arrayElementos;
-      pckMensaje.precio_pedido = precio;
-
-      //Serializar el paquete a JSON
-      var paquete_json = JSON.stringify(pckMensaje);
-      var servicio = DIR_SERV + SERVICIO4;
-
-      //Preparo la llamada
-      xmlHttp.onreadystatechange = procesarEventos; //Funcion que sera llamada cuando haya respuesta
-      xmlHttp.open('POST', servicio, true); //true es que va a ser asincrono, casi siempre se pone true por que casi siempre es asincrono
-      xmlHttp.setRequestHeader('Content-Type', 'application/json'); //identifica el MIME type. Le dice al servidor que le estoy enviando, en este caso un JSON
-      xmlHttp.send(paquete_json); //Cuerpo del mensaje
     }
 
 
@@ -143,7 +147,7 @@
 
 
     //Crea una cabecera con los nombres de los campos en la tabla donde se mostraran las canciones
-    function creaCabecera (tablaLocal) {
+    function creaCabecera(tablaLocal) {
       var filaLocal;
       var columnaLocal;
       var celdaLocal;
@@ -199,7 +203,7 @@
         tabla.border = 1;
 
         if (resultadoBusqueda.resultCount != 0)
-          creaCabecera (tabla);
+          creaCabecera(tabla);
         else {
           console.log("No hay resultados");
           window.alert("No hay resultados");
