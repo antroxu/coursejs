@@ -36,8 +36,7 @@
 
         //window.onload = inicia;
 
-        function pintaRanking() {
-
+        function rellenaArrayTiempos() {
 
             var JSon = xmlHttp.responseText;
             var resultadoBusqueda = JSON.parse(JSon);
@@ -51,42 +50,48 @@
                 rankTiempo = resultadoBusqueda.ranking[i].tiempo;
                 rankNombre = resultadoBusqueda.ranking[i].nombre;
                 arrayTiempos.push([rankTiempo, rankNombre]);
+            
             }
+            
+        }
 
-            console.log(arrayTiempos);
+        function criterioOrdenacionNombre (str1, str2) {
 
-            borrarTabla(tablag);
+            var comparacion = str1[0].localeCompare(str2[0]);
 
-            //ordenarArrayTiempos("porTiempo");
+            return comparacion;
+        }
 
-            ordenarArrayTiempos("porNombre");
+        function criterioOrdenacionTiempo (str1, str2) {
 
-            tablag = crearTablaRanking(arrayTiempos, longitud);
+            var comparacion = str1[1].localeCompare(str2[1]);
+
+            return comparacion;
+        }
+
+        function ordenarPorNombre () {
+
+            //Ordenar array por nombre
+            arrayTiempos.sort(criterioOrdenacionTiempo);
+
+            //Pintar tabla con nueva ordenación
+            crearTablaRanking();
 
         }
 
-        function criterioOrdenacionNombre(a, b) {
-            return a[1] - b[1];
-        }
+        function ordenarPorTiempo () {
 
-        function criterioOrdenacionTiempo(a, b) {
-            return a[0] - b[0];
-        }
+            //Ordenar array por tiempo
+            arrayTiempos.sort(criterioOrdenacionNombre);
 
-        function ordenarArrayTiempos(orden) {
+            //Pintar tabla con nueva ordenación
+            crearTablaRanking();
 
-            if (orden == "porTiempo") {
-                arrayTiempos.sort(criterioOrdenacionTiempo);
-            }
-            else { //porNombre
-                arrayTiempos.sort(criterioOrdenacionNombre);
-            }
         }
 
 
         function procesarEventos() {
 
-            //console.log ("Procesar eventos invocado " + xmlHttp.readyState);
             //Valores del readyState - El que me interesa es el 4
             //0	UNINITIALIZED	-> todavía no se llamó a open().
             //1	LOADING	-> todavía no se llamó a send().
@@ -95,16 +100,11 @@
             //4	COMPLETED	-> La operación está terminada.
 
             if (xmlHttp.readyState === 4) {
-                console.log("La respuesta es :" + xmlHttp.responseText);
-                //console.log("El status es :" + xmlHttp.status);
-                //console.log("El status es : \"" + xmlHttp.statusText + "\"");
 
-                pintaRanking();
+                rellenaArrayTiempos();
 
-
+                crearTablaRanking();
             }
-
-
         }
 
         function enviaTiempo(tiempoPar, nombrePar) {
@@ -143,44 +143,65 @@
             tabla.remove();
         }
 
-        function crearTablaRanking(listRanking, nFilas) {
+        function crearTablaRanking() {
             var body;
-            var tabla;
             var fila;
             var columna;
             var texto;
             var imagen;
+            var nFilas;
             var i;
             var j;
 
+            borrarTabla(tablag);
+
+            nFilas = arrayTiempos.length;
+
             body = document.getElementsByTagName("body")[0];
 
-            tabla = document.createElement("table");
+            tablag = document.createElement("table");
 
-            tabla.border = 1;
+            tablag.border = 1;
 
-            body.appendChild(tabla);
+            body.appendChild(tablag);
+
+            //Cabeceras
+            fila = document.createElement("tr");
+            tablag.appendChild(fila);
+
+            //Crea columna con nombre
+            columna = document.createElement("td");
+            fila.appendChild(columna);
+            columna.addEventListener('click', ordenarPorNombre);
+            texto = document.createTextNode("Nombre");
+            columna.appendChild(texto);
+
+            //Crea columna con tiempo
+            columna = document.createElement("td");
+            fila.appendChild(columna);
+            columna.addEventListener('click', ordenarPorTiempo);
+            texto = document.createTextNode("Tiempo");
+            columna.appendChild(texto);
+
 
             for (i = 0; i < nFilas; i++) {
                 //Crea fila i
                 fila = document.createElement("tr");
-                tabla.appendChild(fila);
+                tablag.appendChild(fila);
 
                 //Crea columna con nombre
                 columna = document.createElement("td");
                 fila.appendChild(columna);
-                texto = document.createTextNode(listRanking[i][0]);
+                texto = document.createTextNode(arrayTiempos[i][0]);
                 columna.appendChild(texto);
 
                 //Crea columna con tiempo
                 columna = document.createElement("td");
                 fila.appendChild(columna);
-                texto = document.createTextNode(listRanking[i][1]);
+                texto = document.createTextNode(arrayTiempos[i][1]);
                 columna.appendChild(texto);
 
             }
-
-            return tabla;
         }
 
         function crearTablaBanderas(nFilas, nColumnas) {
@@ -244,7 +265,7 @@
             var i2
 
             //Barajar banderas 100 veces
-            for (i = 1; i <= 100; i++) {
+            for (i = 1; i <= 300; i++) {
 
                 //Toma dos indices aleatorios
                 i1 = tomaNumeroAleatorio(N_FILAS * N_COLUMNAS) - 1;
@@ -303,8 +324,6 @@
 
             document.getElementById("reloj").value = "";
 
-
-
             escribeMensaje("Mensaje de inicio", "cajaMensaje");
             escribeMensaje("Parejas que quedan: " + parejas_que_quedan, "cajaParejasQueQuedan");
 
@@ -328,7 +347,7 @@
                 lista_tds[i].addEventListener('click', clickBandera);
             }
 
-            semaforo = "rojo"
+            semaforo = "rojo";
             //Oculto todas las imagenes despues de 5 segundos
             //ocultarTodasLasBanderas(lista_tds);
             setTimeout(function () { ocultarTodasLasBanderas(lista_tds) }, 3000);
@@ -336,19 +355,6 @@
 
             //Iicializa cronometro
             timer.addEventListener('secondsUpdated', actualiza_reloj);
-
-
-
-
-            /*
-            for (var i = 0; i < lista_tds.length; i++)
-            {
-                //Oculto imagen
-                //ocultarBandera(lista_tds[i].firstElementChild);
-            }
-            */
-
-
         }
 
         function ocultarTodasLasBanderas(listaTDsTabla) {
@@ -363,9 +369,9 @@
 
 
         function clickBandera(evento) {
+            
             var estilo = evento.currentTarget.firstElementChild.style.visibility
-            // if (!(estilo == 'visible' || estilo == ''))
-            console.log(semaforo);
+            
             if (estilo == 'hidden' && semaforo == "verde")
                 procesaClick(evento);
         }
@@ -405,7 +411,6 @@
                         timer.stop();
                         //Hacer pagina html con felicidades... ejemplo con la pagina de la cnn
                         //location.href = "https://www.cnn.com"
-                        //Como se desprograman eventos de la pareja???
                     }
                     else //Seguimos buscando parejas
                     {
@@ -415,7 +420,8 @@
                 else //parejas diferentes
                 {
                     //Ocultar imagenes
-                    //Retraso de 3 segundos
+                    //Retraso de n milisegundos
+
                     semaforo = "rojo";
                     setTimeout("ocultarDosBanderas(banderaPrimerClick, banderaSegundoClick)", 500);
 

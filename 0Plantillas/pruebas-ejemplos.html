@@ -9,7 +9,7 @@
 
         var tabla;
 
-        window.onload = function () {crearTabla(5, 5);};
+        //window.onload = function () {crearTabla(5, 5);};
 
         function borrarTabla() {
             var filas = tabla.querySelectorAll("tr");
@@ -54,17 +54,90 @@
                     columna.appendChild(celda);
                 }
             }
-        }       
+        } 
+
+        function ordenarPorNombre (str1, str2) {
+
+            var comparacion = str1[0].localeCompare(str2[0]);
+
+            return comparacion;
+
+        }
+
+        
+        function ordenarPorTiempo (str1, str2) {
+
+            var comparacion = str1[1].localeCompare(str2[1]);
+
+            return comparacion;
+
+        }
+
+
+
+        function crearArray (){
+
+            var listaCosas = new Array();
+/*
+            listaCosas.push([1, 1]);
+            listaCosas.push([2, 2]);
+            listaCosas.push([3, 3]);
+            listaCosas.push([4, 4]);
+*/
+            
+            listaCosas.push(["Laura", "02:01:04"]);
+            listaCosas.push(["Angel", "03:00:22"]);
+            listaCosas.push(["Daniel", "01:00:12"]);
+
+            console.log ("Sin Ordenar");
+            console.log (listaCosas);
+
+            listaCosas.sort(ordenarPorNombre);
+
+            console.log ("Ordenado por nombre");
+            console.log (listaCosas);
+
+
+            listaCosas.sort(ordenarPorTiempo);
+
+            console.log ("Ordenado por tiempo");
+            console.log (listaCosas);
+            
+            
+/*
+            listaCosas.push({nombre: "Laura", tiempo: "00:01:04", });
+            listaCosas.push({nombre: "Angel", tiempo: "00:00:22", });
+            listaCosas.push({nombre: "Daniel", tiempo: "00:00:12", });
+
+            console.log (listaCosas);
+*/
+/*
+"00:00:01"
+"00:00:12"
+"00:00:15"
+"00:00:19"
+"00:00:22"
+"00:00:29"
+"00:00:33"
+"00:00:33"
+"00:00:33"
+"00:00:54"
+"00:01:00"
+"00:01:04"
+"00:01:09"
+"00:01:13"
+*/
+        }      
 
 
     </script>
 </head>
 
 <body>
-    <button type="button" onclick="crearTabla(10, 10)">Crear tabla</button>
-
+    <button type="button" onclick="crearArray()">Crear Array</button>
+  <!--
     <button type="button" onclick="borrarTabla()">Borrar tabla</button>
-    <!-- 
+   
     <br>
     <br>
     <br>
