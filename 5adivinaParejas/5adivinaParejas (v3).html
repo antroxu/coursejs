@@ -169,18 +169,18 @@
             fila = document.createElement("tr");
             tablag.appendChild(fila);
 
-            //Crea columna con nombre
-            columna = document.createElement("td");
-            fila.appendChild(columna);
-            columna.addEventListener('click', ordenarPorNombre);
-            texto = document.createTextNode("Nombre");
-            columna.appendChild(texto);
-
             //Crea columna con tiempo
             columna = document.createElement("td");
             fila.appendChild(columna);
             columna.addEventListener('click', ordenarPorTiempo);
             texto = document.createTextNode("Tiempo");
+            columna.appendChild(texto);
+
+            //Crea columna con nombre
+            columna = document.createElement("td");
+            fila.appendChild(columna);
+            columna.addEventListener('click', ordenarPorNombre);
+            texto = document.createTextNode("Nombre");
             columna.appendChild(texto);
 
 
