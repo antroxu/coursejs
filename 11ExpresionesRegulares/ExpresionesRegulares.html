@@ -1,201 +1,269 @@
+<!DOCTYPE html>
 <html>
-   <head>
-      <title>
-         Expresiones regulares
-      </title>
-      <link rel="stylesheet" href="intl-tel-input-12.1.0/build/css/intlTelInput.css">
-      <link rel="stylesheet" href="intl-tel-input-12.1.0/build/css/demo.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-      <script src= "intl-tel-input-12.1.0/build/js/intlTelInput.js"></script>
-    
 
-      <script language="javascript">
-        const EXPRESION_REGULAR_USUARIO_MAIL = /^\w{6,}$/; //El mail y el usuario deben tener al menos 6 caracteres formado por letras, números o guiones bajos
-        const EXPRESION_REGULAR_EMAIL = /^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/; 
-        const EXPRESION_REGULAR_WEB = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/; 
-        const EXPRESION_REGULAR_TELEFONO = /^\+\d{7,15}$/; 
-        const EXPRESION_REGULAR_PWD = /^\w{6,15}$/; 
+<head>
 
-        const DIR_SERV = "http://10.1.2.10:8080/appwebprofe/";
-        const SERVICIO1 = "RegistrarPersona";
-        const SERVICIO2 = "ObtenerClave";
-        const SERVICIO3 = "EnviarMensaje";
-        const SERVICIO4 = "Comprar";
-        const SERVICIO5 = "Login";
+  <meta charset="utf-8">
+  <title>Expresiones regulares</title>
+  <!-- <link rel="stylesheet" href="flags/intlTelInput.css"> -->
+  <!-- https://github.com/jackocnr/intl-tel-input -->
+  <link rel="stylesheet" href="css/intlTelInput.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="js/intlTelInput.js"></script>
 
-        var xmlHttp = new XMLHttpRequest();
-        var JSon;
+</head>
 
-          /*           
-            
-            var patron_anuncio = new RegExp(EXPRESION_REGULAR_WEB);
-            var patron_telefono = new RegExp(EXPRESION_REGULAR_TELEFONO);
-                       
-            var telefono_val = patron_telefono.test(telf);
-            var anuncio_val = patron_anuncio.test (anuncio);
+<script language="javascript">
 
-          */
+  //Otra forma de declarar el control del prefijo del pais
+  //window.onload = function () { $("#phone").intlTelInput({ });};
 
-          function procesarEventos() {
+  const EXPRESION_REGULAR_USUARIO_MAIL = /^\w{6,}$/; //El mail y el usuario deben tener al menos 6 caracteres formado por letras, números o guiones bajos
+  const EXPRESION_REGULAR_EMAIL = /^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+  const EXPRESION_REGULAR_WEB = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+  const EXPRESION_REGULAR_TELEFONO = /^\+\d{7,15}$/;
+  const EXPRESION_REGULAR_PWD = /^\w{6,15}$/;
 
-            //console.log ("Procesar eventos invocado " + xmlHttp.readyState);
-            //Valores del readyState - El que me interesa es el 4
-            //0	UNINITIALIZED	-> todavía no se llamó a open().
-            //1	LOADING	-> todavía no se llamó a send().
-            //2	LOADED	-> send() ya fue invocado, y los encabezados y el estado están disponibles.
-            //3	INTERACTIVE	-> Descargando; responseText contiene información parcial.
-            //4	COMPLETED	-> La operación está terminada.
+  const DIR_SERV = "http://10.1.2.10:8080/appwebprofe/";
+  const SERVICIO1 = "RegistrarPersona";
+  const SERVICIO2 = "ObtenerClave";
+  const SERVICIO3 = "EnviarMensaje";
+  const SERVICIO4 = "Comprar";
+  const SERVICIO5 = "Login";
 
-            if (xmlHttp.readyState === 4) {
-              console.log("La respuesta es :" + xmlHttp.responseText);
-              console.log("El status es :" + xmlHttp.status);
-              console.log("El status es : \"" + xmlHttp.statusText + "\"");
+  var xmlHttp = new XMLHttpRequest();
+  var JSon;
 
-              //Redireccion a pagina de exito
-              location.href = "Confirmacion.html"
+  function procesarEventos() {
 
-            }
+    //console.log ("Procesar eventos invocado " + xmlHttp.readyState);
+    //Valores del readyState - El que me interesa es el 4
+    //0	UNINITIALIZED	-> todavía no se llamó a open().
+    //1	LOADING	-> todavía no se llamó a send().
+    //2	LOADED	-> send() ya fue invocado, y los encabezados y el estado están disponibles.
+    //3	INTERACTIVE	-> Descargando; responseText contiene información parcial.
+    //4	COMPLETED	-> La operación está terminada.
 
-          }
+    if (xmlHttp.readyState === 4) {
+      console.log("La respuesta es :" + xmlHttp.responseText);
+      console.log("El status es :" + xmlHttp.status);
+      console.log("El status es : \"" + xmlHttp.statusText + "\"");
 
-          function enviaFormulario (){
+      //Redireccion a pagina de exito
+      location.href = "Confirmacion.html"
 
-            if (validarFormulario()) {
-              //Envia formulario
-              var pckRegistro = {
-                nombre: document.getElementById("cajaNombre").value,
-                email: document.getElementById("cajaEmail").value,
-                clave: document.getElementById("cajaPwd").value,
-              }
+    }
 
-              //Serializar el paquete a JSON
-              var paquete_json = JSON.stringify(pckRegistro);
-              var servicio = DIR_SERV + SERVICIO5;
+  }
 
-              //Preparo la llamada
-              xmlHttp.onreadystatechange = procesarEventos; //Funcion que sera llamada cuando haya respuesta
-              xmlHttp.open('POST', servicio, true); //true es que va a ser asincrono, casi siempre se pone true por que casi siempre es asincrono
-              xmlHttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8'); //identifica el MIME type. Le dice al servidor que le estoy enviando, en este caso un JSON
-              xmlHttp.send(paquete_json); //Cuerpo del mensaje
-            }
-            else {
+  function enviaFormulario(form) {
+    //Envia formulario
+    /* Si queremos enviar menos datos, usar este
+    var pckRegistro = {
+      nombre: form.nombre,
+      email: form.email,
+      clave: form.clave1,
+      telefono: form.telefono,
+      web: form.web,
+    }
+    */
 
-              console.log ("Algun dato es incorrecto");
+    //Serializar el paquete a JSON
+    //var paquete_json = JSON.stringify(pckRegistro);
+    var paquete_json = JSON.stringify(form);
+    var servicio = DIR_SERV + SERVICIO5;
 
-            }
+    //Preparo la llamada
+    xmlHttp.onreadystatechange = procesarEventos; //Funcion que sera llamada cuando haya respuesta
+    xmlHttp.open('POST', servicio, true); //true es que va a ser asincrono, casi siempre se pone true por que casi siempre es asincrono
+    xmlHttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8'); //identifica el MIME type. Le dice al servidor qué le estoy enviando, en este caso un JSON
+    xmlHttp.send(paquete_json); //Cuerpo del mensaje
 
 
-          }
+  }
 
-          function validarFormulario (){
+  function validarFormulario(form) {
 
-            //Resultado de la validación
-            var resultadoValidacion;
+    //Resultado de la validación
+    var resultadoValidacion;
 
-            //Validar nombre
-            var patron_usuario = new RegExp(EXPRESION_REGULAR_USUARIO_MAIL);
-            var usuario_val = patron_usuario.test(document.getElementById("cajaNombre").value);
-            resultadoValidacion = usuario_val;
+    //Validar nombre
+    var patron_usuario = new RegExp(EXPRESION_REGULAR_USUARIO_MAIL);
+    var usuario_val = patron_usuario.test(form.nombre);
+    resultadoValidacion = usuario_val;
 
-            console.log ("Validacion Nombre: " + usuario_val);
+    console.log("Validacion Nombre: " + usuario_val);
 
-            //Validar email
-            var patron_mail = new RegExp(EXPRESION_REGULAR_EMAIL);
-            var correo_val = patron_mail.test(document.getElementById("cajaEmail").value);
-            resultadoValidacion = (resultadoValidacion && correo_val);
+    //Validar email
+    var patron_mail = new RegExp(EXPRESION_REGULAR_EMAIL);
+    var correo_val = patron_mail.test(form.email);
+    resultadoValidacion = (resultadoValidacion && correo_val);
 
-            console.log ("Validacion Email: " + correo_val);
+    console.log("Validacion Email: " + correo_val);
 
-            //Validar clave
-            var patron_clave = new RegExp(EXPRESION_REGULAR_PWD);
-            var clave_val = patron_clave.test(document.getElementById("cajaPwd").value);
-            resultadoValidacion = (resultadoValidacion && clave_val);
+    //Validar clave
+    var patron_clave = new RegExp(EXPRESION_REGULAR_PWD);
+    var clave_val = patron_clave.test(form.clave1);
+    resultadoValidacion = (resultadoValidacion && clave_val);
 
-            console.log ("Validacion clave: " + clave_val);
+    console.log("Validacion clave: " + clave_val);
 
-            //Validar que clave1 y clave 2 son ifguales
-            var clave_val2 = (document.getElementById("cajaPwd").value == document.getElementById("cajaPwd2").value)
-            resultadoValidacion = (resultadoValidacion && clave_val2);
+    //Validar que clave1 y clave 2 son iguales
+    var clave_val2 = (form.clave1 == form.clave2);
+    resultadoValidacion = (resultadoValidacion && clave_val2);
 
-            console.log ("Validacion clave 2: " + clave_val2);
+    console.log("Validacion clave 2: " + clave_val2);
 
-            //Devuelve el resultado de la validacion
-            return resultadoValidacion;
+    //Validar telefono
+    var patron_telefono = new RegExp(EXPRESION_REGULAR_TELEFONO);
+    var telefono_val = patron_telefono.test(form.telefono);
+    resultadoValidacion = (resultadoValidacion && telefono_val);
 
-          }
-         
-      </script>
-   </head>
-   <body>
-         <!--
+    console.log("Validacion telefono: " + telefono_val);
+    console.log("Validacion telefono por plug-in: " + $("#phone").intlTelInput("isValidNumber"));
+
+    //Validar web
+    var patron_web = new RegExp(EXPRESION_REGULAR_WEB);
+    var web_val = patron_web.test(form.web);
+    resultadoValidacion = (resultadoValidacion && web_val);
+
+    console.log("Validacion web: " + web_val);
+
+    //Devuelve el resultado de la validacion
+    return resultadoValidacion;
+
+  }
+
+  function leerFormularioRegistro() {
+
+    var input = $("#phone");
+    var countryData = input.intlTelInput("getSelectedCountryData");
+
+    var formularioRegistro = {
+      nombre: document.getElementById("cajaNombre").value,
+      email: document.getElementById("cajaEmail").value,
+      clave1: document.getElementById("cajaPwd1").value,
+      clave2: document.getElementById("cajaPwd2").value,
+      telefono: input.intlTelInput("getNumber"),
+      web: document.getElementById("cajaWeb").value,
+      pais: countryData.name,
+      codigo_pais: countryData.iso2,
+      prefijo_pais: countryData.dialCode,
+    }
+
+    return formularioRegistro;
+
+  }
+
+  function hacerRegistro() {
+
+    console.clear();
+
+    // Lee los datos del formulario
+    var formulario = leerFormularioRegistro();
+
+    // Valida el formulario y si es correcto lo envía
+    if (validarFormulario(formulario)) {
+      //enviaFormulario(formulario);
+      console.log("Formulario enviado");
+    }
+    else {
+      console.log("Algun dato del formulario es incorrecto");
+    }
+
+  }
+
+</script>
+
+<body>
+  <!--
             action:  URL a donde la información recolectada por el formulario debería enviarse.
             method:  con que método HTTP se enviará la información ("get" o "post")
-         //-->
-      <form action="/my-handling-form-page" method="post">
+          -->
 
-        <div>
-          <label for="Nombre">Nombre</label>
-          <input type="text" id="cajaNombre" value = "Angel1969"> </input>
-        </div>
+  <form action="/my-handling-form-page" method="post">
 
-        <br>
+    <div>
+      <label for="Nombre">Nombre</label>
+      <input type="text" id="cajaNombre" value="Angel1969"> </input>
+    </div>
 
-        <div>
-          <label for="email">Email</label>
-          <input type="text" id="cajaEmail" value = "angel1969@torrelodon.es"> </input>
-        </div>
+    <br>
 
-        <br>
+    <div>
+      <label for="email">Email</label>
+      <input type="text" id="cajaEmail" value="angel1969@torrelodon.es"> </input>
+    </div>
 
-        <div>
-            <label for="pwd">Clave</label>
-            <input type="text" id="cajaPwd" value = "yupi629$"> </input>
-        </div>
+    <br>
 
-        <br>
+    <div>
+      <label for="pwd">Clave</label>
+      <input type="text" id="cajaPwd1" value="yupi629"> </input>
+    </div>
 
-        <div>
-            <label for="pwd2">Repetir clave</label>
-            <input type="text" id="cajaPwd2" value = "yupi629$"> </input>
-        </div>
+    <br>
 
-        <br>
-        
-        <div>
-          <input id="phone" type="tel">
-          <script> $("#phone").intlTelInput({ }); </script>
-        </div>
+    <div>
+      <label for="pwd2">Repetir clave</label>
+      <input type="text" id="cajaPwd2" value="yupi629"> </input>
+    </div>
 
-        <br>
+    <br>
 
-        <div>
-            <button type="button" onclick="enviaFormulario()">Registrarse</button>
-            <button type="reset">Limpiar</button>
-        </div>
+    <div>
+      <label for="telefono">Telefono</label>
+      <!-- <input id="phone" type="tel" value="976123123">-->
+      <input id="phone" type="tel">
+      <script>
+        $("#phone").intlTelInput({
+          //utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.15/js/utils.js",
+          //utilsScript: "js/utils.js",
+          utilsScript: "C:/Data/20180423 - Formación/20180513 - Curso JS-Ionic/coursejs/11ExpresionesRegulares/js/utils.js",
+          initialCountry: "auto", //"ES"
+          autoPlaceholder: "polite", //"off" "aggressive" "polite"
 
-      </form>
-<!--
-        <div>
-            <label for="telefono">Telefono</label>
-            <input type="text" id="cajaTelefono"> </input>
-        </div>
+          //allowDropdown: false
+          //autoHideDialCode: false
+          // autoPlaceholder: "off",
+          // dropdownContainer: "body",
+          // excludeCountries: ["us"],
+          // formatOnDisplay: false,
+          geoIpLookup: function (callback) {
+            $.get("http://ipinfo.io", function () { }, "jsonp").always(function (resp) {
+              var countryCode = (resp && resp.country) ? resp.country : "";
+              callback(countryCode);
+            });
+          },
+          // hiddenInput: "full_number",
+          // initialCountry: "auto",
+          // nationalMode: false,
+          // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+          // placeholderNumberType: "MOBILE",
+          preferredCountries: ['ES', 'PT', 'AR'],
+          separateDialCode: true,
+          placeholderNumberType: "MOBILE", //"FIXED_LINE" "MOBILE" "FIXED_LINE_OR_MOBILE"
+        });
+      </script>
+    </div>
 
-        <div>
-            <label for="web">Web</label>
-            <input type="text" id="cajaWeb"> </input>
-        </div>
+    <br>
 
-//-->
+    <div>
+      <label for="web">Web</label>
+      <input type="text" id="cajaWeb" value="www.unaweb.com"> </input>
+    </div>
 
-    </form>
-    
-    
-    
-    
-    
-    
-    <!--
+    <br>
 
-         //-->
-   </body>
+    <div>
+      <button type="button" onclick="hacerRegistro()">Registrarse</button>
+      <button type="reset">Limpiar</button>
+    </div>
+
+
+  </form>
+
+</body>
+
 </html>
