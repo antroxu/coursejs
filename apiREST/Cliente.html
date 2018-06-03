@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cliente API REST</title>
+</head>
+<script language="javascript">
+  var xmlHttp = new XMLHttpRequest();
+
+  function procesarEventos() {
+    if (xmlHttp.readyState === 4) {
+      console.log("La respuesta es :" + xmlHttp.responseText);
+      console.log("El status es :" + xmlHttp.status);
+      console.log("El status es : \"" + xmlHttp.statusText + "\"");
+    }
+  }
+
+  function enviar() {
+    xmlHttp.onreadystatechange = procesarEventos;
+    //xmlHttp.open('GET', "http://localhost:8888/subir", true);
+    xmlHttp.open('GET', "http://localhost:8888/iniciar", true);
+    //xmlHttp.setRequestHeader('X-PINGOTHER', 'pingpong');
+    //xmlHttp.setRequestHeader('Content-Type', 'text/html; charset=UTF-8');
+    xmlHttp.send();
+  }
+
+  //Failed to load http://localhost:8888/subir: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'null' is therefore not allowed access.
+</script>
+<body>
+  <button type="button" onclick="enviar()">Enviar</button>
+</body>
+</html>
