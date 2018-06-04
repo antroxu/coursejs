@@ -3,7 +3,7 @@ var exec = require('child_process').exec;
 function iniciar(response) {
     console.log("Manipulador de petición 'iniciar' ha sido llamado.");
     //Ejecutar comando de DOS
-    exec("dir", function (error, stdout, stderr){ //Callback: se ejecuta cuando termina el comando
+    exec("ls -las", function (error, stdout, stderr){ //Callback: se ejecuta cuando termina el comando
         //Devolver resultado
         console.log("1");
         response.writeHead(200, { "Content-Type": "text/html", "Access-Control-Allow-Origin" : "*" });

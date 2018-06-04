@@ -1,0 +1,122 @@
+<html>
+
+<head>
+  <title>
+    Drop Down List
+  </title>
+  <script language="javascript">
+
+    const DIR_SERV = "http://10.1.2.10:8080/appwebprofe/";
+    const SERVICIO1 = "RegistrarPersona";
+    const SERVI CIO2 = "ObtenerClave";
+    const SERVICIO3 = "EnviarMensaje";
+    const SERVICIO4 = "Comprar";
+    const SERVICIO5 = "Login";
+    const SERVICIO6 = "CargaMenuSelect";
+    const SERVICIO7 = "CargarTrabajadores";
+    const PARAMETR7 = "?dpto=";
+
+    var xmlHttp = new XMLHttpRequest();
+
+    window.onload = iniciar();
+
+    //Comentario
+    /*
+      Comentarios
+    */
+
+
+    //Funcion para iniciar los elementos
+    function iniciar() {
+
+      //Carga los departamentos
+
+      cargarDepartamentos();
+
+
+      //Selecciona un departamento por defecto
+
+
+    }
+
+    //Funcion que recupera la lista de departamentos de la fuente
+    //Devuelve un array con los departamentos
+    function cargarDepartamentos() {
+
+      //Hacer la llamada
+      xmlHttp.onreadystatechange = recuperaDepartamentos;
+      xmlHttp.open('GET', DIR_SERV + SERVICIO6, true);
+      xmlHttp.send(null);
+
+    }
+
+    //Funcion que carga los elementos del combo departamento
+    function recuperaDepartamentos() {
+
+      if (xmlHttp.readyState === 4) {
+
+        var JSon = xmlHttp.responseText;
+        var listaDepartamentos = JSON.parse(JSon);
+        var longitud = listaDepartamentos.length;
+        var optionDepart;
+        var comboDepart = document.getElementById("departamentos");
+
+        for (var i = 0; i < longitud; i++) {
+          //Añade departamento en combo de departamentos
+          optionDepart = document.createElement("OPTION");
+          optionDepart.value = listaDepartamentos[i].numero;
+          optionDepart.text = listaDepartamentos[i].nombre;
+          comboDepart.appendChild(optionDepart);
+        }
+
+        comboDepart.addEventListener('change', cargarPersonas);
+
+      }
+
+    }
+
+    function cargarPersonas() {
+
+      var comboDepart = document.getElementById("departamentos");
+      var codigo = comboDepart.value;
+      var servicio = DIR_SERV + SERVICIO7 + PARAMETR7 + codigo
+
+      //Hacer la llamada
+      xmlHttp.onreadystatechange = recuperaPersonas;
+      xmlHttp.open('GET', servicio, true);
+      xmlHttp.send(null);
+    }
+
+
+    function recuperaPersonas() {
+
+      if (xmlHttp.readyState === 4) {
+
+        var JSon = xmlHttp.responseText;
+        var listaPersonas = JSON.parse(JSon);
+        var longitud = listaPersonas.length;
+        var optionPersonas;
+        var comboPersonas = document.getElementById("personas");
+
+        for (var i = 0; i < longitud; i++) {
+          //Añade persona en combo de personas
+          optionPersonas = document.createElement("OPTION");
+          optionPersonas.text = listaPersonas[i].nombre;
+          comboPersonas.appendChild(optionPersonas);
+        }
+
+      }
+
+    }
+  </script>
+</head>
+
+<body>
+
+  <select id="departamentos"> </select>
+  <br><br>
+  <select id="personas"> </select>
+
+</body>
+
+</html>
