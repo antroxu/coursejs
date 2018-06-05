@@ -1,0 +1,134 @@
+<!--
+
+  Tenéis que consumir el resultado de llamar a 
+
+http://10.1.2.10:8080/Marcador/ActualizarInfoPartido
+
+mediante una petición GET
+
+
+que os tendrá que devolver un json así
+
+
+{"marcador":{"goles_local":5,"goles_visitante":1},"listacomentarios":[{"minuto":1,"comentario":"Empieza el partido"},{"minuto":3,"comentario":"Oportunidad de Alves"},{"minuto":3,"comentario":"Oportunidad de Alves"},{"minuto":53,"comentario":"Marcelo con el pelo"},{"minuto":53,"comentario":"Marcelo con el pelo"}],"fotopartido":"desnutrido.jpeg"}
+
+Para que se vea bien la foto, debéis concatenar al atributo fotoparido, la ruta completa del servidor: es decir
+si recibo desnutrudo.jpg, tengo que componer el String
+desnutrido.jpeg
+http://10.1.2.10:8080/Marcador/desnutrido.jpeg
+
+y poner eso como atributo src de img
+
+
+-->
+
+
+
+<html>
+
+<head>
+  <title>
+    Marcador deportivo
+  </title>
+  <script language="javascript">
+
+    const DIR_SERV = "http://10.1.2.10:8080/Marcador/";
+    const SERVICIO = "ActualizarInfoPartido";
+    var xmlHttp = new XMLHttpRequest();
+
+    window.onload = iniciar();
+
+    function iniciar() {
+
+      recuperaCronica();
+
+    }
+
+    function recuperaCronica() {
+
+      //Hacer la llamada
+      var servicio = DIR_SERV + SERVICIO;
+      xmlHttp.onreadystatechange = cargarCronica;
+      xmlHttp.open('GET', servicio, true);
+      xmlHttp.send(null);
+
+    }
+
+    function cargarCronica() {
+
+      if (xmlHttp.readyState === 4) {
+
+        var JSon = xmlHttp.responseText;
+        var resultadoCronica = JSON.parse(JSon);
+
+        var golesL = document.getElementById("textoLocal");
+        var golesV = document.getElementById("textoVisitante");
+        var imgPartido = document.getElementById("fotoCronica");
+
+
+        golesL.innerText = resultadoCronica.marcador.goles_local;
+        golesV.innerText = resultadoCronica.marcador.goles_visitante;
+
+        for (var i = 0; i < resultadoCronica.listacomentarios.length; i++) {
+          console.log(
+            resultadoCronica.listacomentarios[i].minuto +
+
+            resultadoCronica.listacomentarios[i].comentario);
+
+
+        }
+
+
+
+        imgPartido.src = DIR_SERV + resultadoCronica.fotopartido;
+
+
+
+
+
+
+
+
+      }
+    }
+          //Comentario
+          /*
+            Comentarios
+          */
+
+  </script>
+</head>
+
+<body>
+
+  <!-- Marcador -->
+  <div>
+    <table border=1>
+      <tr>
+        <td>Local</td>
+        <td>Visitante</td>
+      </tr>
+      <tr>
+        <td id="textoLocal">0</td>
+        <td id="textoVisitante">0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Foto -->
+  <div>
+    <img id="fotoCronica" src="foto.png" width=2 00px border=4>
+  </div>
+
+  <!-- Botón refrescar -->
+  <button type="button" onclick="actualizarMarcador()">Actualizar</button>
+
+  <!-- Panel de comentarios -->
+  <div>
+
+
+  </div>
+
+</body>
+
+</html>
