@@ -1,23 +1,15 @@
 <!--
 
-  Tenéis que consumir el resultado de llamar a 
-
-http://10.1.2.10:8080/Marcador/ActualizarInfoPartido
-
-mediante una petición GET
 
 
-que os tendrá que devolver un json así
+        
 
 
-{"marcador":{"goles_local":5,"goles_visitante":1},"listacomentarios":[{"minuto":1,"comentario":"Empieza el partido"},{"minuto":3,"comentario":"Oportunidad de Alves"},{"minuto":3,"comentario":"Oportunidad de Alves"},{"minuto":53,"comentario":"Marcelo con el pelo"},{"minuto":53,"comentario":"Marcelo con el pelo"}],"fotopartido":"desnutrido.jpeg"}
 
-Para que se vea bien la foto, debéis concatenar al atributo fotoparido, la ruta completa del servidor: es decir
-si recibo desnutrudo.jpg, tengo que componer el String
-desnutrido.jpeg
-http://10.1.2.10:8080/Marcador/desnutrido.jpeg
+idReloj = setInterval(cambiaSgteFoto, 500);
+clearInterval(idReloj);
 
-y poner eso como atributo src de img
+
 
 
 -->
@@ -35,16 +27,24 @@ y poner eso como atributo src de img
     const DIR_SERV = "http://10.1.2.10:8080/Marcador/";
     const SERVICIO = "ActualizarInfoPartido";
     var xmlHttp = new XMLHttpRequest();
+    var idReloj;
+    var contador = 1;
 
     window.onload = iniciar();
 
     function iniciar() {
 
+      console.clear;
       recuperaCronica();
+      idReloj = setInterval(recuperaCronica, 5000);
 
     }
 
     function recuperaCronica() {
+
+      console.log(contador);
+      contador++;
+
 
       //Hacer la llamada
       var servicio = DIR_SERV + SERVICIO;
@@ -60,41 +60,68 @@ y poner eso como atributo src de img
 
         var JSon = xmlHttp.responseText;
         var resultadoCronica = JSON.parse(JSon);
+        var tablaCronica;
+        var fila;
+        var columna;
+        var longitudTabla;
 
         var golesL = document.getElementById("textoLocal");
         var golesV = document.getElementById("textoVisitante");
         var imgPartido = document.getElementById("fotoCronica");
+        var tablaCronica = document.getElementById("tablaCronica");
 
+        borrarTabla(tablaCronica);
 
         golesL.innerText = resultadoCronica.marcador.goles_local;
         golesV.innerText = resultadoCronica.marcador.goles_visitante;
 
-        for (var i = 0; i < resultadoCronica.listacomentarios.length; i++) {
-          console.log(
-            resultadoCronica.listacomentarios[i].minuto +
+        fila = document.createElement("tr");
 
-            resultadoCronica.listacomentarios[i].comentario);
+        columna = document.createElement("td");
+        columna.innerText = "Minuto";
+        columna.width = 70;
+        fila.appendChild(columna);
 
+        columna = document.createElement("td");
+        columna.innerText = "Comentario";
+        columna.width = 300;
+        fila.appendChild(columna);
+
+        tablaCronica.appendChild(fila);
+
+        longitudTabla = resultadoCronica.listacomentarios.length;
+
+        //for (var i = 0; i < longitudTabla; i++) {
+        for (var i = longitudTabla - 1; i >= 0; i--) {
+
+          fila = document.createElement("tr");
+
+          columna = document.createElement("td");
+          columna.innerText = resultadoCronica.listacomentarios[i].minuto;
+          fila.appendChild(columna);
+
+          columna = document.createElement("td");
+          columna.innerText = resultadoCronica.listacomentarios[i].comentario;
+          fila.appendChild(columna);
+
+          tablaCronica.appendChild(fila);
 
         }
 
-
-
         imgPartido.src = DIR_SERV + resultadoCronica.fotopartido;
-
-
-
-
-
-
-
-
       }
     }
-          //Comentario
-          /*
-            Comentarios
-          */
+
+    function borrarTabla(tablaLocal) {
+      var filas = tablaLocal.querySelectorAll("tr");
+
+      for (var i = 0; i < filas.length; i++) {
+        var columnas = filas[i].querySelectorAll("td");
+        for (var j = 0; j < columnas.length; j++)
+          columnas[j].remove();
+        filas[i].remove();
+      }
+    }
 
   </script>
 </head>
@@ -105,8 +132,8 @@ y poner eso como atributo src de img
   <div>
     <table border=1>
       <tr>
-        <td>Local</td>
-        <td>Visitante</td>
+        <td width=70>Local</td>
+        <td width=70>Visitante</td>
       </tr>
       <tr>
         <td id="textoLocal">0</td>
@@ -117,17 +144,17 @@ y poner eso como atributo src de img
 
   <!-- Foto -->
   <div>
-    <img id="fotoCronica" src="foto.png" width=2 00px border=4>
+    <img id="fotoCronica" src="foto.png" width=147 border=4>
   </div>
 
   <!-- Botón refrescar -->
-  <button type="button" onclick="actualizarMarcador()">Actualizar</button>
+  <button type="button" onclick="recuperaCronica()">Actualizar</button>
 
   <!-- Panel de comentarios -->
-  <div>
+  <table border=1 id="tablaCronica">
 
 
-  </div>
+  </table>
 
 </body>
 
